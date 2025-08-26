@@ -99,4 +99,169 @@
       <h3>Reciclaje</h3>
       <label>Azul: <input type="number" id="blue1" min="0" max="3" value="0"></label>
       <label>Amarillo: <input type="number" id="yellow1" min="0" max="3" value="0"></label>
-      <label>V
+      <label>Verde: <input type="number" id="green1" min="0" max="3" value="0"></label>
+      <label>Mal reciclado: <input type="number" id="wrong1" min="0" value="0"></label>
+      <h3>Reforestación</h3>
+      <label>Árboles: 
+        <select id="trees1">
+          <option value="0">0</option>
+          <option value="1">1 (5 pts)</option>
+          <option value="2">2 (15 pts)</option>
+        </select>
+      </label>
+      <label>Diana árbol 1: 
+        <select id="t1_1">
+          <option value="0">Ninguna</option>
+          <option value="1">1</option>
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+      </label>
+      <label>Diana árbol 2: 
+        <select id="t1_2">
+          <option value="0">Ninguna</option>
+          <option value="1">1</option>
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="bonus1"> Bonus (1 en cada contenedor)</label>
+      <label><input type="checkbox" id="finish1"> Acaba en zona FIN</label>
+      <label><input type="checkbox" id="drive1"> Todos conducen</label>
+    </div>
+    <div class="total">Total: <span id="total1">0</span> pts</div>
+  </div>
+
+  <!-- Equipo 2 -->
+  <div class="team" id="team2">
+    <h2>Equipo 2</h2>
+    <div class="sub-timer" id="prep2">Prep: 30</div>
+    <div class="score-section">
+      <h3>Reciclaje</h3>
+      <label>Azul: <input type="number" id="blue2" min="0" max="3" value="0"></label>
+      <label>Amarillo: <input type="number" id="yellow2" min="0" max="3" value="0"></label>
+      <label>Verde: <input type="number" id="green2" min="0" max="3" value="0"></label>
+      <label>Mal reciclado: <input type="number" id="wrong2" min="0" value="0"></label>
+      <h3>Reforestación</h3>
+      <label>Árboles: 
+        <select id="trees2">
+          <option value="0">0</option>
+          <option value="1">1 (5 pts)</option>
+          <option value="2">2 (15 pts)</option>
+        </select>
+      </label>
+      <label>Diana árbol 1: 
+        <select id="t2_1">
+          <option value="0">Ninguna</option>
+          <option value="1">1</option>
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+      </label>
+      <label>Diana árbol 2: 
+        <select id="t2_2">
+          <option value="0">Ninguna</option>
+          <option value="1">1</option>
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="bonus2"> Bonus (1 en cada contenedor)</label>
+      <label><input type="checkbox" id="finish2"> Acaba en zona FIN</label>
+      <label><input type="checkbox" id="drive2"> Todos conducen</label>
+    </div>
+    <div class="total">Total: <span id="total2">0</span> pts</div>
+  </div>
+</div>
+
+<audio id="endSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
+
+<script>
+let mainTimer = 120, prep1 = 30, prep2 = 30;
+let intervalMain, interval1, interval2;
+let runMain=false, run1=false, run2=false;
+
+function computeTeam(n){
+  const blue = +document.getElementById('blue'+n).value;
+  const yellow = +document.getElementById('yellow'+n).value;
+  const green = +document.getElementById('green'+n).value;
+  const wrong = +document.getElementById('wrong'+n).value;
+  const trees = +document.getElementById('trees'+n).value;
+  const d1 = +document.getElementById('t'+n+'_1').value;
+  const d2 = +document.getElementById('t'+n+'_2').value;
+  const bonus = document.getElementById('bonus'+n).checked;
+  const finish = document.getElementById('finish'+n).checked;
+  const drive = document.getElementById('drive'+n).checked;
+
+  // reciclaje
+  function recScore(x){ if(x===1) return 2; if(x===2) return 5; if(x===3) return 15; return 0; }
+  let rec = recScore(blue)+recScore(yellow)+recScore(green);
+  rec -= wrong*5;
+  if(bonus && blue>=1 && yellow>=1 && green>=1) rec+=10;
+
+  // reforestación
+  let ref = 0;
+  if(trees===1) ref += 5; 
+  if(trees===2) ref += 15;
+  ref += d1+d2;
+  if(d1>0 && d2>0) ref += 10;
+
+  // otros
+  let oth=0;
+  if(finish) oth+=10;
+  if(drive) oth+=15;
+
+  // penalización por tiempo extra
+  const prep = (n===1? prep1: prep2);
+  let pen=0;
+  if(prep<0){ pen = Math.floor(Math.abs(prep)/10)*5; }
+
+  let total = rec+ref+oth - pen;
+  document.getElementById('total'+n).textContent = total;
+}
+
+function computeAll(){ computeTeam(1); computeTeam(2); }
+
+function startAll(){
+  if(runMain) return;
+  runMain=run1=run2=true;
+  intervalMain=setInterval(()=>{
+    document.getElementById('mainTimer').textContent=mainTimer;
+    if(mainTimer<=0){ clearInterval(intervalMain); runMain=false; document.getElementById('endSound').play(); }
+    mainTimer--; 
+  },1000);
+  interval1=setInterval(()=>{
+    document.getElementById('prep1').textContent='Prep: '+prep1;
+    if(prep1===0){ document.getElementById('endSound').play(); }
+    if(prep1<=0){ document.getElementById('prep1').textContent='Extra: '+(-prep1); }
+    computeAll(); prep1--; 
+  },1000);
+  interval2=setInterval(()=>{
+    document.getElementById('prep2').textContent='Prep: '+prep2;
+    if(prep2===0){ document.getElementById('endSound').play(); }
+    if(prep2<=0){ document.getElementById('prep2').textContent='Extra: '+(-prep2); }
+    computeAll(); prep2--; 
+  },1000);
+}
+
+document.getElementById('startAll').onclick=startAll;
+document.getElementById('stopBoth').onclick=()=>{
+  clearInterval(interval1); clearInterval(interval2);
+  run1=run2=false;
+};
+document.getElementById('stop1').onclick=()=>{ clearInterval(interval1); run1=false; };
+document.getElementById('stop2').onclick=()=>{ clearInterval(interval2); run2=false; };
+
+document.querySelectorAll('input,select,checkbox').forEach(el=> el.addEventListener('input', computeAll));
+computeAll();
+</script>
+</body>
+</html>
