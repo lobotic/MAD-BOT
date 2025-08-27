@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<title>MAD-BOT Score System</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -9,13 +10,16 @@
     color: #f1a140;
     text-align: center;
   }
-  header img {
-    max-width: 200px;
-    margin: 10px auto;
+  header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px;
   }
-  h1 { color: #f1a140; }
+  header img {
+    max-width: 120px;
+  }
   .timers { 
-    margin: 20px auto; 
     font-size: 1.5em; 
     display: flex; 
     justify-content: space-around;
@@ -74,22 +78,19 @@
 <body>
 <header>
   <img src="MADBOTLogo.png" alt="MAD-BOT Logo">
-  <h1>MAD-BOT Score System</h1>
+  <div class="timers">
+    <div>
+      <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
+      <button onclick="startMain()">Iniciar</button>
+      <button onclick="resetMain()">Reset</button>
+    </div>
+    <div>
+      <p>Preparación: <span id="prepTimer">30</span> s</p>
+      <button onclick="startPrep()">Iniciar</button>
+      <button onclick="resetPrep()">Reset</button>
+    </div>
+  </div>
 </header>
-
-<!-- Temporizadores -->
-<div class="timers">
-  <div>
-    <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
-    <button onclick="startMain()">Iniciar</button>
-    <button onclick="resetMain()">Reset</button>
-  </div>
-  <div>
-    <p>Preparación: <span id="prepTimer">30</span> s</p>
-    <button onclick="startPrep()">Iniciar</button>
-    <button onclick="resetPrep()">Reset</button>
-  </div>
-</div>
 
 <!-- Columnas de equipos -->
 <div class="columns">
@@ -240,19 +241,18 @@ function startMain(){
     if(mainTimer<=0){ clearInterval(intervalMain); intervalMain=null; beep(); }
   },1000);
 }
+
 function resetMain(){
   clearInterval(intervalMain); intervalMain=null;
   mainTimer=120; document.getElementById("mainTimer").textContent=mainTimer;
-  // Reset equipos
+  // Limpiar todos los campos de ambos equipos
   ["1","2"].forEach(t=>{
     document.getElementById("team"+t+"_name").value="";
     document.getElementById("team"+t+"_cat").selectedIndex=0;
     document.getElementById("team"+t+"_round").value=1;
     ["blue","yellow","green","misSorted"].forEach(id=>document.getElementById(id+t).value=0);
     ["trees","diana"+t+"a","diana"+t+"b"].forEach(id=>document.getElementById(id).value=0);
-    document.getElementById("finish"+t).checked=false;
-    document.getElementById("allDrive"+t).checked=false;
-    document.getElementById("prepPenalty"+t).checked=false;
+    ["finish","allDrive","prepPenalty"].forEach(id=>document.getElementById(id+t).checked=false);
     document.getElementById("total"+t).textContent=0;
   });
   resetPrep();
@@ -271,17 +271,14 @@ function startPrep(){
     }
   },1000);
 }
+
 function resetPrep(){
   clearInterval(intervalPrep);
   intervalPrep=null;
   prepTimer=30;
   document.getElementById("prepTimer").textContent=prepTimer;
-  // Quitar penalizaciones por preparación
-  document.getElementById("prepPenalty1").checked=false;
-  document.getElementById("prepPenalty2").checked=false;
-  // Recalcular puntuaciones
-  calc(1);
-  calc(2);
+  ["prepPenalty1","prepPenalty2"].forEach(id=>document.getElementById(id).checked=false);
+  calc(1); calc(2);
 }
 
 // ==== CÁLCULO DE PUNTUACIÓN ====
@@ -346,6 +343,7 @@ document.getElementById("save").onclick=()=>{
   });
   refreshTable();
 };
+
 document.getElementById("export").onclick=()=>{
   let data=loadEntries(); if(!data.length){alert("No hay datos");return;}
   let csv="FechaHora,Equipo,Categoría,Ronda,Total\n"+
@@ -353,9 +351,11 @@ document.getElementById("export").onclick=()=>{
   let blob=new Blob([csv],{type:"text/csv"}); let a=document.createElement("a");
   a.href=URL.createObjectURL(blob); a.download="madbot.csv"; a.click();
 };
+
 document.getElementById("reset").onclick=()=>{ localStorage.removeItem("madbot"); refreshTable(); };
 
 refreshTable(); calc(1); calc(2);
 </script>
 </body>
 </html>
+
