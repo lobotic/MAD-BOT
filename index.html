@@ -14,7 +14,7 @@ header {
   align-items: center;
   margin: 10px;
 }
-header img { width: 172px; }
+header img { width: 206px; } /* 20% más grande */
 .timers { font-size: 1.5em; display: flex; justify-content: space-around; width: 80%; }
 .columns { display: flex; justify-content: space-around; margin: 20px; }
 .team {
@@ -129,12 +129,25 @@ th, td { border: 1px solid #f0dcc0; padding: 8px; text-align: center; color: #f0
   <button id="save">Guardar Resultados</button>
   <button id="export">Exportar CSV</button>
   <button id="reset">Reiniciar Tabla</button>
+  <button id="finalScore">Puntuación Final</button>
 </div>
 
+<!-- Tabla de resultados por ronda -->
 <table id="table">
   <thead>
     <tr>
       <th>FechaHora</th><th>Equipo</th><th>Categoría</th><th>Ronda</th><th>Total</th><th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<!-- Tabla de clasificación final -->
+<h3 style="text-align:center; margin-top:20px;">Clasificación Final</h3>
+<table id="finalTable">
+  <thead>
+    <tr>
+      <th>Puesto</th><th>Equipo</th><th>Categoría</th><th>Participaciones</th><th>Total</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -207,10 +220,39 @@ document.getElementById("export").onclick=()=>{
   let csv="FechaHora,Equipo,Categoría,Ronda,Total\n"+data.map(e=>[e.time,e.team,e.cat,e.round,e.total].join(",")).join("\n");
   let blob=new Blob([csv],{type:"text/csv"}); let a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="madbot.csv"; a.click();
 };
-document.getElementById("reset").onclick=()=>{ localStorage.removeItem("madbot"); refreshTable(); resetTeam(1); resetTeam(2); resetPrep(); resetMain(); };
+
+document.getElementById("reset").onclick=()=>{ 
+  localStorage.removeItem("madbot"); 
+  refreshTable(); 
+  resetTeam(1); resetTeam(2); resetPrep(); resetMain(); 
+  document.querySelector("#finalTable tbody").innerHTML="";
+};
+
+// Botón Puntuación Final
+document.getElementById("finalScore").onclick = () => {
+  let data = loadEntries();
+  let finalScores = {};
+  data.forEach(e => {
+    if(finalScores[e.team]){
+      finalScores[e.team].total += e.total;
+      finalScores[e.team].rounds += 1;
+    } else {
+      finalScores[e.team] = {team: e.team, cat: e.cat, total: e.total, rounds: 1};
+    }
+  });
+  let finalArray = Object.values(finalScores).sort((a,b) => b.total - a.total);
+  let tb = document.querySelector("#finalTable tbody");
+  tb.innerHTML = "";
+  finalArray.forEach((e,i)=>{
+    let tr = document.createElement("tr");
+    tr.innerHTML = `<td>${i+1}</td><td>${e.team}</td><td>${e.cat}</td><td>${e.rounds}</td><td>${e.total}</td>`;
+    tb.appendChild(tr);
+  });
+};
 
 refreshTable(); calc(1); calc(2);
 </script>
 </body>
 </html>
+
 
