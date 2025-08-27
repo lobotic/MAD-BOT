@@ -33,9 +33,11 @@ table { margin: 20px auto; border-collapse: collapse; background: #5a1a24; width
 th, td { border: 1px solid #f0dcc0; padding: 8px; text-align: center; color: #f0dcc0; }
 .team-sections { display: flex; justify-content: space-between; }
 .team-section { width: 48%; }
+#table td button { margin:0 auto; display:block; }
 </style>
 </head>
 <body>
+
 <header>
   <div class="timers">
     <div>
@@ -140,10 +142,11 @@ th, td { border: 1px solid #f0dcc0; padding: 8px; text-align: center; color: #f0
 <script>
 let mainTimer=120, intervalMain=null;
 let prepTimer=30, intervalPrep=null;
+
 function beep(){ new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg").play(); }
 
 function startMain(){ if(intervalMain) return; intervalMain=setInterval(()=>{ mainTimer--; document.getElementById("mainTimer").textContent=mainTimer; if(mainTimer<=0){ clearInterval(intervalMain); intervalMain=null; beep(); } },1000);}
-function resetMain(){ clearInterval(intervalMain); intervalMain=null; mainTimer=120; document.getElementById("mainTimer").textContent=mainTimer; ["1","2"].forEach(t=>resetTeam(t)); resetPrep(); }
+function resetMain(){ clearInterval(intervalMain); intervalMain=null; mainTimer=120; document.getElementById("mainTimer").textContent=mainTimer; resetTeam(1); resetTeam(2); resetPrep(); }
 
 function startPrep(){ if(intervalPrep) return; intervalPrep=setInterval(()=>{ if(prepTimer>0){ prepTimer--; document.getElementById("prepTimer").textContent=prepTimer; if(prepTimer===0) beep(); } else { clearInterval(intervalPrep); intervalPrep=null; } },1000);}
 function resetPrep(){ clearInterval(intervalPrep); intervalPrep=null; prepTimer=30; document.getElementById("prepTimer").textContent=prepTimer; ["prepPenalty1","prepPenalty2"].forEach(id=>document.getElementById(id).checked=false); calc(1); calc(2); }
@@ -152,10 +155,12 @@ function resetTeam(team){
   document.getElementById("team"+team+"_name").value=""; 
   document.getElementById("team"+team+"_cat").selectedIndex=0; 
   document.getElementById("team"+team+"_round").value=1; 
-  ["blue","yellow","green","misSorted"].forEach(id=>document.getElementById(id+team).value=0);
-  ["trees","diana"+team+"a","diana"+team+"b"].forEach(id=>document.getElementById(id).value=0);
-  ["finish","allDrive","prepPenalty","fallenTrees"].forEach(id=>document.getElementById(id+team).checked=false);
-  document.getElementById("total"+team).textContent=0; 
+
+  ["blue","yellow","green","misSorted"].forEach(id=>{ let el=document.getElementById(id+team); if(el) el.value=0; });
+  ["trees","diana"+team+"a","diana"+team+"b"].forEach(id=>{ let el=document.getElementById(id); if(el) el.selectedIndex=0; });
+  ["finish","allDrive","prepPenalty","fallenTrees"].forEach(id=>{ let el=document.getElementById(id+team); if(el) el.checked=false; });
+
+  document.getElementById("total"+team).textContent=0;
 }
 
 function calc(team){
@@ -182,7 +187,11 @@ function loadEntries(){ return JSON.parse(localStorage.getItem('madbot')||"[]");
 function saveEntries(d){ localStorage.setItem('madbot',JSON.stringify(d)); }
 function refreshTable(){ 
   let tb=document.querySelector("#table tbody"); tb.innerHTML="";
-  loadEntries().forEach((e,i)=>{ let tr=document.createElement("tr"); tr.innerHTML=`<td>${e.time}</td><td>${e.team}</td><td>${e.cat}</td><td>${e.round}</td><td>${e.total}</td><td><button onclick="deleteRow(${i})">Borrar</button></td>`; tb.appendChild(tr); });
+  loadEntries().forEach((e,i)=>{ 
+    let tr=document.createElement("tr"); 
+    tr.innerHTML=`<td>${e.time}</td><td>${e.team}</td><td>${e.cat}</td><td>${e.round}</td><td>${e.total}</td><td><button onclick="deleteRow(${i})">Borrar</button></td>`; 
+    tb.appendChild(tr); 
+  });
 }
 function deleteRow(index){ let data=loadEntries(); data.splice(index,1); saveEntries(data); refreshTable(); }
 
