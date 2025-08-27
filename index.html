@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<title>MAD-BOT Score System</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -14,7 +15,13 @@
     margin: 10px auto;
   }
   h1 { color: #f1a140; }
-  .timers { margin: 20px auto; font-size: 1.5em; }
+  .timers { 
+    margin: 20px auto; 
+    font-size: 1.5em; 
+    display: flex; 
+    justify-content: space-around;
+    width: 80%;
+  }
   .columns {
     display: flex;
     justify-content: space-around;
@@ -26,14 +33,13 @@
     border-radius: 10px;
     width: 45%;
     background: #5a1a24;
-    text-align: left; /* alineación a la izquierda */
+    text-align: left;
   }
   .team h2 { color: #f0dcc0; text-align: center; }
   .team input, .team select {
     margin: 5px;
     padding: 5px;
   }
-  .score { font-size: 1.5em; color: #e44942; }
   button {
     margin: 5px;
     padding: 8px 16px;
@@ -72,16 +78,18 @@
   <h1>MAD-BOT Score System</h1>
 </header>
 
-<!-- Temporizador principal -->
+<!-- Temporizadores -->
 <div class="timers">
-  <p>Tiempo de Partida: <span id="mainTimer">120</span> s 
+  <div>
+    <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
     <button onclick="startMain()">Iniciar</button>
     <button onclick="resetMain()">Reset</button>
-  </p>
-  <p>Penalización tiempo: <span id="penaltyTimer">0</span> s 
-    <button onclick="startPenalty()">Iniciar</button>
-    <button onclick="resetPenalty()">Reset</button>
-  </p>
+  </div>
+  <div>
+    <p>Preparación: <span id="prepTimer">30</span> s</p>
+    <button onclick="startPrep()">Iniciar</button>
+    <button onclick="resetPrep()">Reset</button>
+  </div>
 </div>
 
 <!-- Columnas de equipos -->
@@ -138,6 +146,7 @@
     <h3>Otros</h3>
     <label><input type="checkbox" id="finish1"> Acabar en zona FIN (10 pts)</label><br>
     <label><input type="checkbox" id="allDrive1"> Todos conducen (15 pts)</label><br>
+    <label><input type="checkbox" id="prepPenalty1"> Penalización por preparación (−15 pts)</label><br>
 
     <h3>Total: <span id="total1">0</span> pts</h3>
   </div>
@@ -194,6 +203,7 @@
     <h3>Otros</h3>
     <label><input type="checkbox" id="finish2"> Acabar en zona FIN (10 pts)</label><br>
     <label><input type="checkbox" id="allDrive2"> Todos conducen (15 pts)</label><br>
+    <label><input type="checkbox" id="prepPenalty2"> Penalización por preparación (−15 pts)</label><br>
 
     <h3>Total: <span id="total2">0</span> pts</h3>
   </div>
@@ -219,7 +229,7 @@
 <script>
 // ==== TIMERS ====
 let mainTimer=120, intervalMain=null;
-let penalty=0, intervalPenalty=null;
+let prepTimer=30, intervalPrep=null;
 
 function beep(){ new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg").play(); }
 
@@ -243,19 +253,36 @@ function resetMain(){
     ["trees","diana"+t+"a","diana"+t+"b"].forEach(id=>document.getElementById(id).value=0);
     document.getElementById("finish"+t).checked=false;
     document.getElementById("allDrive"+t).checked=false;
+    document.getElementById("prepPenalty"+t).checked=false;
     document.getElementById("total"+t).textContent=0;
   });
+  resetPrep();
 }
 
-function startPenalty(){
-  if(intervalPenalty) return;
-  intervalPenalty=setInterval(()=>{
-    penalty++; document.getElementById("penaltyTimer").textContent=penalty;
+function startPrep(){
+  if(intervalPrep) return;
+  intervalPrep=setInterval(()=>{
+    if(prepTimer > 0){
+      prepTimer--;
+      document.getElementById("prepTimer").textContent = prepTimer;
+      if(prepTimer===0) beep();
+    } else {
+      clearInterval(intervalPrep);
+      intervalPrep=null;
+    }
   },1000);
 }
-function resetPenalty(){
-  clearInterval(intervalPenalty); intervalPenalty=null;
-  penalty=0; document.getElementById("penaltyTimer").textContent=penalty;
+function resetPrep(){
+  clearInterval(intervalPrep);
+  intervalPrep=null;
+  prepTimer=30;
+  document.getElementById("prepTimer").textContent=prepTimer;
+  // Quitar penalizaciones por preparación
+  document.getElementById("prepPenalty1").checked=false;
+  document.getElementById("prepPenalty2").checked=false;
+  // Recalcular puntuaciones
+  calc(1);
+  calc(2);
 }
 
 // ==== CÁLCULO DE PUNTUACIÓN ====
@@ -278,7 +305,8 @@ function calc(team){
   let oth=0;
   if(document.getElementById("finish"+team).checked) oth+=10;
   if(document.getElementById("allDrive"+team).checked) oth+=15;
-  let total=rec+ref+oth-penalty;
+  if(document.getElementById("prepPenalty"+team).checked) oth-=15;
+  let total=rec+ref+oth;
   document.getElementById("total"+team).textContent=total;
   return total;
 }
