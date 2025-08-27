@@ -8,6 +8,10 @@ Competición de robótica escolar
 
 ---
 
+# 🏟️ CAMPO DE JUEGO
+
+---
+
 # 🏆 Marcador MAD-BOT
 
 Aplicación web para gestionar la puntuación en la competición de robótica escolar **MAD-BOT**.  
