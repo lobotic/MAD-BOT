@@ -6,22 +6,22 @@ Competición de robótica escolar
 [Descargar logo en tamaño grande](https://raw.githubusercontent.com/lobotic/MAD-BOT/refs/heads/main/MADBOTLogo.png)
 ---
 
-# 📝 REGLAMENTO
+## 📝 REGLAMENTO
 
 TO DO
 ---
 
-# 🏟️ CAMPO DE JUEGO
+## 🏟️ CAMPO DE JUEGO
 
 TO DO
 ---
 
-# 🏆 Marcador MAD-BOT
+## 🏆 Marcador MAD-BOT
 
 Aplicación web para gestionar la puntuación en la competición de robótica escolar **MAD-BOT**.  
 Permite llevar la cuenta de **dos equipos a la vez**, con temporizadores, preparación, penalizaciones y checklist de arbitraje.
 
-## Características
+### Características
 
 - **Temporizadores**:
   - 120 segundos de partida (con sonido al finalizar).
@@ -36,7 +36,7 @@ Permite llevar la cuenta de **dos equipos a la vez**, con temporizadores, prepar
 
 ---
 
-## 🖥️ Cómo usarlo
+### 🖥️ Cómo usarlo
 
 1. Abre la [web](https://lobotic.github.io/MAD-BOT/) `en un navegador.  
 2. Pulsa **Iniciar** en los temporizadores para empezar la preparación y la partida.  
