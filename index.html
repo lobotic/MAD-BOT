@@ -4,9 +4,18 @@
 <meta charset="UTF-8">
 <style>
 body { font-family: Arial, sans-serif; background-color: #470f18; color: #f1a140; }
-header { display: flex; justify-content: space-around; align-items: center; margin: 10px; }
-header img { width: 206px; } /* 20% más grande */
-.timers { font-size: 1.5em; display: flex; justify-content: space-around; width: 80%; }
+
+/* Header en 3 columnas centradas */
+header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  text-align: center;
+  margin: 10px;
+}
+header img { width: 206px; justify-self: center; }
+.timers { font-size: 1.5em; }
+
 .columns { display: flex; justify-content: space-around; margin: 20px; }
 .team { border: 2px solid #b6c0c0; padding: 15px; border-radius: 10px; width: 45%; background: #5a1a24; text-align: left; }
 .team h2 { color: #f0dcc0; text-align: center; }
@@ -25,17 +34,15 @@ th, td { border: 1px solid #f0dcc0; padding: 8px; text-align: center; color: #f0
 
 <header>
   <div class="timers">
-    <div>
-      <p>Preparación: <span id="prepTimer">30</span> s</p>
-      <button onclick="startPrep()">Iniciar</button>
-      <button onclick="resetPrep()">Reset</button>
-    </div>
-    <img src="MADBOTLogo.png" alt="MAD-BOT Logo">
-    <div>
-      <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
-      <button onclick="startMain()">Iniciar</button>
-      <button onclick="resetMain()">Reset</button>
-    </div>
+    <p>Preparación: <span id="prepTimer">30</span> s</p>
+    <button onclick="startPrep()">Iniciar</button>
+    <button onclick="resetPrep()">Reset</button>
+  </div>
+  <img src="MADBOTLogo.png" alt="MAD-BOT Logo">
+  <div class="timers">
+    <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
+    <button onclick="startMain()">Iniciar</button>
+    <button onclick="resetMain()">Reset</button>
   </div>
 </header>
 
@@ -142,19 +149,65 @@ let prepTimer=30, intervalPrep=null;
 
 function beep(){ new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg").play(); }
 
-function startMain(){ if(intervalMain) return; intervalMain=setInterval(()=>{ mainTimer--; document.getElementById("mainTimer").textContent=mainTimer; if(mainTimer<=0){ clearInterval(intervalMain); intervalMain=null; beep(); } },1000);}
-function resetMain(){ clearInterval(intervalMain); intervalMain=null; mainTimer=120; document.getElementById("mainTimer").textContent=mainTimer; resetTeam(1); resetTeam(2); resetPrep(); }
+function startMain(){ 
+  if(intervalMain) return; 
+  intervalMain=setInterval(()=>{ 
+    mainTimer--; 
+    document.getElementById("mainTimer").textContent=mainTimer; 
+    if(mainTimer<=0){ 
+      clearInterval(intervalMain); 
+      intervalMain=null; 
+      beep(); 
+    } 
+  },1000);
+}
 
-function startPrep(){ if(intervalPrep) return; intervalPrep=setInterval(()=>{ if(prepTimer>0){ prepTimer--; document.getElementById("prepTimer").textContent=prepTimer; if(prepTimer===0) beep(); } else { clearInterval(intervalPrep); intervalPrep=null; } },1000);}
-function resetPrep(){ clearInterval(intervalPrep); intervalPrep=null; prepTimer=30; document.getElementById("prepTimer").textContent=prepTimer; ["prepPenalty1","prepPenalty2"].forEach(id=>document.getElementById(id).checked=false); calc(1); calc(2); }
+function resetMain(){ 
+  clearInterval(intervalMain); 
+  intervalMain=null; 
+  mainTimer=120; 
+  document.getElementById("mainTimer").textContent=mainTimer; 
+}
+
+function startPrep(){ 
+  if(intervalPrep) return; 
+  intervalPrep=setInterval(()=>{ 
+    if(prepTimer>0){ 
+      prepTimer--; 
+      document.getElementById("prepTimer").textContent=prepTimer; 
+      if(prepTimer===0) beep(); 
+    } else { 
+      clearInterval(intervalPrep); 
+      intervalPrep=null; 
+    } 
+  },1000);
+}
+
+function resetPrep(){ 
+  clearInterval(intervalPrep); 
+  intervalPrep=null; 
+  prepTimer=30; 
+  document.getElementById("prepTimer").textContent=prepTimer; 
+  ["prepPenalty1","prepPenalty2"].forEach(id=>document.getElementById(id).checked=false); 
+  calc(1); calc(2); 
+}
 
 function resetTeam(team){ 
   document.getElementById("team"+team+"_name").value=""; 
   document.getElementById("team"+team+"_cat").selectedIndex=0; 
   document.getElementById("team"+team+"_round").value=1; 
-  ["blue","yellow","green","misSorted"].forEach(id=>{ let el=document.getElementById(id+team); if(el) el.value=0; });
-  ["trees","diana"+team+"a","diana"+team+"b"].forEach(id=>{ let el=document.getElementById(id); if(el) el.selectedIndex=0; });
-  ["finish","allDrive","prepPenalty","fallenTrees"].forEach(id=>{ let el=document.getElementById(id+team); if(el) el.checked=false; });
+  ["blue","yellow","green","misSorted"].forEach(id=>{
+    let el=document.getElementById(id+team); 
+    if(el) el.value=0; 
+  });
+  ["trees"+team,"diana"+team+"a","diana"+team+"b"].forEach(id=>{
+    let el=document.getElementById(id); 
+    if(el) el.selectedIndex=0; 
+  });
+  ["finish","allDrive","prepPenalty","fallenTrees"].forEach(id=>{
+    let el=document.getElementById(id+team); 
+    if(el) el.checked=false; 
+  });
   document.getElementById("total"+team).textContent=0;
 }
 
@@ -234,5 +287,3 @@ refreshTable(); calc(1); calc(2);
 </script>
 </body>
 </html>
-
-
