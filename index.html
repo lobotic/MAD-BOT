@@ -269,4 +269,67 @@ function calc(team){
   [blue,yellow,green].forEach(c=>{
     if(c===1) rec+=2;
     else if(c===2) rec+=5;
-    else if(c===3) rec+=15
+    else if(c===3) rec+=15;
+  });
+  rec -= mis*5;
+  let trees=+document.getElementById("trees"+team).value;
+  let ref=trees===1?5:trees===2?15:0;
+  ref += +document.getElementById("diana"+team+"a").value;
+  ref += +document.getElementById("diana"+team+"b").value;
+  let oth=0;
+  if(document.getElementById("finish"+team).checked) oth+=10;
+  if(document.getElementById("allDrive"+team).checked) oth+=15;
+  let total=rec+ref+oth-penalty;
+  document.getElementById("total"+team).textContent=total;
+  return total;
+}
+
+document.querySelectorAll("input,select").forEach(el=>{
+  el.addEventListener("change", ()=>{calc(1);calc(2);});
+});
+
+// ==== GUARDAR Y EXPORTAR ====
+function loadEntries(){ return JSON.parse(localStorage.getItem('madbot')||"[]"); }
+function saveEntries(d){ localStorage.setItem('madbot',JSON.stringify(d)); }
+
+function refreshTable(){
+  let tb=document.querySelector("#table tbody");
+  tb.innerHTML="";
+  loadEntries().forEach((e,i)=>{
+    let tr=document.createElement("tr");
+    tr.innerHTML=`<td>${e.time}</td><td>${e.team}</td><td>${e.cat}</td><td>${e.round}</td><td>${e.total}</td>
+                  <td><button onclick="deleteRow(${i})">Borrar</button></td>`;
+    tb.appendChild(tr);
+  });
+}
+
+function deleteRow(index){
+  let data=loadEntries(); data.splice(index,1); saveEntries(data); refreshTable();
+}
+
+document.getElementById("save").onclick=()=>{
+  [1,2].forEach(t=>{
+    let entry={
+      time:new Date().toLocaleString(),
+      team:document.getElementById("team"+t+"_name").value,
+      cat:document.getElementById("team"+t+"_cat").value,
+      round:document.getElementById("team"+t+"_round").value,
+      total:calc(t)
+    };
+    let data=loadEntries(); data.push(entry); saveEntries(data);
+  });
+  refreshTable();
+};
+document.getElementById("export").onclick=()=>{
+  let data=loadEntries(); if(!data.length){alert("No hay datos");return;}
+  let csv="FechaHora,Equipo,Categoría,Ronda,Total\n"+
+  data.map(e=>[e.time,e.team,e.cat,e.round,e.total].join(",")).join("\n");
+  let blob=new Blob([csv],{type:"text/csv"}); let a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="madbot.csv"; a.click();
+};
+document.getElementById("reset").onclick=()=>{ localStorage.removeItem("madbot"); refreshTable(); };
+
+refreshTable(); calc(1); calc(2);
+</script>
+</body>
+</html>
