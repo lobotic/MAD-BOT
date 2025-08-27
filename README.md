@@ -15,7 +15,8 @@ TO DO
 
 ## 🏟️ CAMPO DE JUEGO
 
-TO DO
+Creo que es de vital importancia para facilitar el acceso a cuanta más gente mejor que los recursos sean lo más sencillos posibles. A tal efecto, para facilitar el entrenamiento y la competición, se propone un campo fácil de diseñar con 10 A3. Se puede descargar una versión imprimible a A3 en este [enlace](https://github.com/lobotic/MAD-BOT/blob/main/CAMPOMADROB25.pdf).
+![Imagen del campo](https://github.com/lobotic/MAD-BOT/blob/main/campo.png)
 
 ---
 
