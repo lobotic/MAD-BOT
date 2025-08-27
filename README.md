@@ -41,6 +41,7 @@ Permite llevar la cuenta de **dos equipos a la vez**, con temporizadores, prepar
 5. Usa **Reset de equipo** para limpiar cada equipo y **Reset de temporizadores** para empezar una nueva ronda.  
 6. Pulsa **Guardar Resultados** para registrar la partida (se colocan por orden de puntuación, de mayor a menor) y **Exportar CSV** para descargar los datos.  
 7. Puedes borrar filas individuales de la tabla de resultados.
+8. Para ver la clasificación acumulada de varias rondas, pulsa **Puntuación Final**; se generará una tabla con el total acumulado de cada equipo y su puesto.
 
 ![Captura de pantalla](https://github.com/lobotic/MAD-BOT/blob/main/captura.png)
 
