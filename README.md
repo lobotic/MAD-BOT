@@ -9,7 +9,7 @@ Competición de robótica escolar
 
 ## 📝 REGLAMENTO
 
-TO DO
+[Reglamento en proceso](https://docs.google.com/document/d/13vANhwdDC_dVqrpb6rWbraBfavzMSSk49OUr-6IzBso/edit?usp=sharing)
 
 ---
 
