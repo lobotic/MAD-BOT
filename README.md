@@ -1,5 +1,5 @@
 # 🤖 MAD-BOT
-Competición de robótica escolar
+Competición de robótica escolar inspirada en [Eurobot](https://www.eurobot.es/)
 
 ![Logo](https://github.com/lobotic/MAD-BOT/blob/main/MADBOTLogoMINI.png)
 
@@ -44,4 +44,12 @@ Permite llevar la cuenta de **dos equipos a la vez**, con temporizadores, prepar
 8. Para ver la clasificación acumulada de varias rondas, pulsa **Puntuación Final**; se generará una tabla con el total acumulado de cada equipo y su puesto.
 
 ![Captura de pantalla](https://github.com/lobotic/MAD-BOT/blob/main/captura.png)
+
+---
+
+## LICENCIA
+Todos los materiales de MAD-BOT se distribuyen bajo licencia CC BY-NC-SA 4.0
+
+---
+
 
