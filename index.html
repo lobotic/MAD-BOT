@@ -4,82 +4,45 @@
   <meta charset="UTF-8">
   <title>Calculadora de Puntuaciones</title>
   <style>
-    /* ================================
-       ESTILOS (CSS)
-       Aquí se decide cómo se ve la página:
-       colores, tamaños, posiciones, etc.
-       ================================= */
-
-    /* El cuerpo de la página */
     body {
-      font-family: Arial, sans-serif;  /* Fuente de letras */
-      margin: 20px;                    /* Espacio alrededor */
-      background-color: #f8f8f8;       /* Color de fondo */
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f8f8f8;
     }
-
-    /* El encabezado donde van los temporizadores y el logo */
     header {
-      display: grid;                        /* Usamos cuadrícula */
-      grid-template-columns: 1fr auto 1fr;  /* Tres columnas: izquierda, centro, derecha */
-      align-items: center;                  /* Centrar verticalmente */
-      text-align: center;                   /* Centrar el texto */
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      text-align: center;
       margin: 10px;
     }
-
-    /* La imagen del logo */
     header img {
-      width: 206px;         /* Tamaño del logo */
-      justify-self: center; /* Centrarlo en su columna */
+      width: 206px;
+      justify-self: center;
     }
-
-    /* Estilo para los números de los temporizadores */
     .timers {
-      font-size: 1.5em;   /* Tamaño grande */
+      font-size: 1.5em;
     }
-
-    /* Cada bloque de equipo va en un recuadro blanco */
     section {
-      margin-top: 20px;          /* Separación entre secciones */
-      background: #fff;          /* Fondo blanco */
-      padding: 10px;             /* Espacio interior */
-      border-radius: 8px;        /* Bordes redondeados */
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra ligera */
+      margin-top: 20px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-
-    /* Títulos dentro de las secciones */
-    h2 {
-      margin-top: 0;
-    }
-
-    /* Cada fila con un dato o selector */
-    .row {
-      margin: 5px 0;
-    }
-
-    /* Botones */
-    button {
-      margin: 2px;
-      padding: 5px 10px;
-    }
+    h2 { margin-top: 0; }
+    .row { margin: 5px 0; }
+    button { margin: 2px; padding: 5px 10px; }
   </style>
 </head>
 <body>
-  <!-- ================================
-       ENCABEZADO (HTML)
-       Contiene los temporizadores y el logo
-       ================================= -->
   <header>
-    <!-- Temporizador de Preparación -->
     <div class="timers">
       Preparación: <span id="prepTimer">60</span>s
       <button onclick="startPrep()">▶</button>
       <button onclick="resetPrep()">⟳</button>
     </div>
-
-    <!-- Logo en el centro -->
     <img src="logo.png" alt="Logo">
-
-    <!-- Temporizador de la Partida -->
     <div class="timers">
       Partida: <span id="mainTimer">120</span>s
       <button onclick="startMain()">▶</button>
@@ -87,10 +50,7 @@
     </div>
   </header>
 
-  <!-- ================================
-       EQUIPO 1
-       Aquí se introducen los datos de puntuación del primer equipo
-       ================================= -->
+  <!-- EQUIPO 1 -->
   <section>
     <h2>Equipo 1</h2>
     <div class="row">Nombre: <input id="team1_name" type="text"></div>
@@ -102,14 +62,10 @@
       </select>
     </div>
     <div class="row">Ronda: <input id="team1_round" type="number" value="1" min="1"></div>
-
-    <!-- Clasificación de residuos -->
     <div class="row">Azules: <input id="blue1" type="number" value="0" min="0"></div>
     <div class="row">Amarillos: <input id="yellow1" type="number" value="0" min="0"></div>
     <div class="row">Verdes: <input id="green1" type="number" value="0" min="0"></div>
     <div class="row">Mal clasificados: <input id="misSorted1" type="number" value="0" min="0"></div>
-
-    <!-- Árboles -->
     <div class="row">Árboles colocados:
       <select id="trees1">
         <option value="0">0</option>
@@ -117,8 +73,6 @@
         <option value="2">2</option>
       </select>
     </div>
-
-    <!-- Dianas -->
     <div class="row">Diana A:
       <select id="diana1a">
         <option value="0">Fallida</option>
@@ -131,23 +85,19 @@
         <option value="1">Conseguida</option>
       </select>
     </div>
-
-    <!-- Otros logros -->
     <div class="row"><input id="finish1" type="checkbox"> Robot regresa a base</div>
     <div class="row"><input id="allDrive1" type="checkbox"> Todos los robots se mueven</div>
     <div class="row"><input id="prepPenalty1" type="checkbox"> Penalización por preparación</div>
     <div class="row"><input id="fallenTrees1" type="checkbox"> Árboles caídos</div>
 
-    <!-- Total de puntos -->
     <div class="row">Total: <span id="total1">0</span></div>
+    <div class="row">Penalizadores: <span id="penaltyPoints1">0</span></div>
+
     <button onclick="calculateScore(1)">Calcular</button>
     <button onclick="resetTeam(1)">Reset Equipo</button>
   </section>
 
-  <!-- ================================
-       EQUIPO 2
-       (idéntico al 1, con sufijo "2" en los IDs)
-       ================================= -->
+  <!-- EQUIPO 2 -->
   <section>
     <h2>Equipo 2</h2>
     <div class="row">Nombre: <input id="team2_name" type="text"></div>
@@ -164,78 +114,79 @@
     <div class="row">Verdes: <input id="green2" type="number" value="0" min="0"></div>
     <div class="row">Mal clasificados: <input id="misSorted2" type="number" value="0" min="0"></div>
     <div class="row">Árboles colocados:
-      <select id="trees2"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select>
+      <select id="trees2">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+      </select>
     </div>
-    <div class="row">Diana A: <select id="diana2a"><option value="0">Fallida</option><option value="1">Conseguida</option></select></div>
-    <div class="row">Diana B: <select id="diana2b"><option value="0">Fallida</option><option value="1">Conseguida</option></select></div>
+    <div class="row">Diana A:
+      <select id="diana2a">
+        <option value="0">Fallida</option>
+        <option value="1">Conseguida</option>
+      </select>
+    </div>
+    <div class="row">Diana B:
+      <select id="diana2b">
+        <option value="0">Fallida</option>
+        <option value="1">Conseguida</option>
+      </select>
+    </div>
     <div class="row"><input id="finish2" type="checkbox"> Robot regresa a base</div>
     <div class="row"><input id="allDrive2" type="checkbox"> Todos los robots se mueven</div>
     <div class="row"><input id="prepPenalty2" type="checkbox"> Penalización por preparación</div>
     <div class="row"><input id="fallenTrees2" type="checkbox"> Árboles caídos</div>
+
     <div class="row">Total: <span id="total2">0</span></div>
+    <div class="row">Penalizadores: <span id="penaltyPoints2">0</span></div>
+
     <button onclick="calculateScore(2)">Calcular</button>
     <button onclick="resetTeam(2)">Reset Equipo</button>
   </section>
 
-  <!-- ================================
-       SCRIPTS (JS)
-       Aquí está la "lógica": temporizadores y cálculo de puntuaciones
-       ================================= -->
   <script>
-    /* ==========
-       TEMPORIZADORES
-       ========== */
-
-    // Variables para controlar los contadores
-    let prepTimer = 60;     // Tiempo de preparación
-    let mainTimer = 120;    // Tiempo de partida
+    let prepTimer = 60;
+    let mainTimer = 120;
     let intervalPrep = null;
     let intervalMain = null;
 
-    // Iniciar el temporizador de preparación
     function startPrep(){
-      if(intervalPrep) return; // Evitar múltiples inicios
+      if(intervalPrep) return;
       intervalPrep = setInterval(()=>{
         if(prepTimer > 0){
           prepTimer--;
           document.getElementById("prepTimer").textContent = prepTimer;
         }
-      },1000); // cada segundo
+      },1000);
     }
 
-    // Reiniciar el temporizador de preparación
     function resetPrep(){
       clearInterval(intervalPrep);
-      intervalPrep=null;
-      prepTimer=60;
-      document.getElementById("prepTimer").textContent=prepTimer;
+      intervalPrep = null;
+      prepTimer = 60;
+      document.getElementById("prepTimer").textContent = prepTimer;
     }
 
-    // Iniciar el temporizador principal (partida)
     function startMain(){
       if(intervalMain) return;
       intervalMain = setInterval(()=>{
-        if(mainTimer>0){
+        if(mainTimer > 0){
           mainTimer--;
-          document.getElementById("mainTimer").textContent=mainTimer;
+          document.getElementById("mainTimer").textContent = mainTimer;
         }
       },1000);
     }
 
-    // Reiniciar solo el temporizador de la partida
     function resetMain(){
       clearInterval(intervalMain);
-      intervalMain=null;
-      mainTimer=120;
-      document.getElementById("mainTimer").textContent=mainTimer;
+      intervalMain = null;
+      mainTimer = 120;
+      document.getElementById("mainTimer").textContent = mainTimer;
     }
 
-    /* ==========
-       CÁLCULO DE PUNTUACIONES
-       ========== */
-
     function calculateScore(team){
-      let score=0;
+      let score = 0;
+      let penalty = 0;
 
       // Sumar puntos por clasificación
       score += parseInt(document.getElementById("blue"+team).value)*5;
@@ -243,56 +194,50 @@
       score += parseInt(document.getElementById("green"+team).value)*15;
 
       // Restar puntos por errores
-      score -= parseInt(document.getElementById("misSorted"+team).value)*5;
+      let misSortedPoints = parseInt(document.getElementById("misSorted"+team).value)*5;
+      penalty += misSortedPoints;
+      score -= misSortedPoints;
 
-      // Puntos por árboles colocados
+      // Puntos por árboles
       score += parseInt(document.getElementById("trees"+team).value)*10;
 
       // Puntos por dianas
       score += parseInt(document.getElementById("diana"+team+"a").value)*20;
       score += parseInt(document.getElementById("diana"+team+"b").value)*20;
 
-      // Puntos extra (checkboxes)
-      if(document.getElementById("finish"+team).checked) score+=10;
-      if(document.getElementById("allDrive"+team).checked) score+=15;
+      // Puntos extra
+      if(document.getElementById("finish"+team).checked) score += 10;
+      if(document.getElementById("allDrive"+team).checked) score += 15;
 
-      // Penalizaciones (quitan puntos)
-      if(document.getElementById("prepPenalty"+team).checked) score-=10;
-      if(document.getElementById("fallenTrees"+team).checked) score-=5;
+      // Penalizaciones
+      if(document.getElementById("prepPenalty"+team).checked){
+        score -= 10;
+        penalty += 10;
+      }
+      if(document.getElementById("fallenTrees"+team).checked){
+        score -= 5;
+        penalty += 5;
+      }
 
-      // Mostrar total
-      document.getElementById("total"+team).textContent=score;
+      document.getElementById("total"+team).textContent = score;
+      document.getElementById("penaltyPoints"+team).textContent = penalty;
     }
 
-    /* ==========
-       RESET DE EQUIPO
-       Borra todos los datos introducidos en un equipo
-       ========== */
     function resetTeam(team){
       document.getElementById("team"+team+"_name").value="";
       document.getElementById("team"+team+"_cat").selectedIndex=0;
       document.getElementById("team"+team+"_round").value=1;
-
-      // Poner a 0 las casillas de números
       ["blue","yellow","green","misSorted"].forEach(id=>{
-        let el=document.getElementById(id+team);
-        if(el) el.value=0;
+        document.getElementById(id+team).value=0;
       });
-
-      // Poner a 0 los desplegables
       ["trees"+team,"diana"+team+"a","diana"+team+"b"].forEach(id=>{
-        let el=document.getElementById(id);
-        if(el) el.selectedIndex=0;
+        document.getElementById(id).selectedIndex=0;
       });
-
-      // Desmarcar las casillas de verificación
       ["finish","allDrive","prepPenalty","fallenTrees"].forEach(id=>{
-        let el=document.getElementById(id+team);
-        if(el) el.checked=false;
+        document.getElementById(id+team).checked=false;
       });
-
-      // Poner el total a 0
       document.getElementById("total"+team).textContent=0;
+      document.getElementById("penaltyPoints"+team).textContent=0;
     }
   </script>
 </body>
