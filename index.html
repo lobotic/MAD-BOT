@@ -14,7 +14,7 @@ header {
   align-items: center;
   margin: 10px;
 }
-header img { max-width: 144px; }
+header img { width: 172px; }
 .timers { font-size: 1.5em; display: flex; justify-content: space-around; width: 80%; }
 .columns { display: flex; justify-content: space-around; margin: 20px; }
 .team {
@@ -34,6 +34,7 @@ th, td { border: 1px solid #f0dcc0; padding: 8px; text-align: center; color: #f0
 .team-sections { display: flex; justify-content: space-between; }
 .team-section { width: 48%; }
 #table td button { margin:0 auto; display:block; }
+.buttons-container { display:flex; justify-content:center; gap:10px; margin:20px 0; }
 </style>
 </head>
 <body>
@@ -45,7 +46,7 @@ th, td { border: 1px solid #f0dcc0; padding: 8px; text-align: center; color: #f0
       <button onclick="startPrep()">Iniciar</button>
       <button onclick="resetPrep()">Reset</button>
     </div>
-    <img src="MADBOTLogo.png" alt="MAD-BOT Logo" style="width:172px;">
+    <img src="MADBOTLogo.png" alt="MAD-BOT Logo">
     <div>
       <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
       <button onclick="startMain()">Iniciar</button>
@@ -124,8 +125,7 @@ th, td { border: 1px solid #f0dcc0; padding: 8px; text-align: center; color: #f0
   </div>
 </div>
 
-<div>
-   <div style="text-align:centre;">
+<div class="buttons-container">
   <button id="save">Guardar Resultados</button>
   <button id="export">Exportar CSV</button>
   <button id="reset">Reiniciar Tabla</button>
@@ -156,11 +156,9 @@ function resetTeam(team){
   document.getElementById("team"+team+"_name").value=""; 
   document.getElementById("team"+team+"_cat").selectedIndex=0; 
   document.getElementById("team"+team+"_round").value=1; 
-
   ["blue","yellow","green","misSorted"].forEach(id=>{ let el=document.getElementById(id+team); if(el) el.value=0; });
   ["trees","diana"+team+"a","diana"+team+"b"].forEach(id=>{ let el=document.getElementById(id); if(el) el.selectedIndex=0; });
   ["finish","allDrive","prepPenalty","fallenTrees"].forEach(id=>{ let el=document.getElementById(id+team); if(el) el.checked=false; });
-
   document.getElementById("total"+team).textContent=0;
 }
 
@@ -215,3 +213,4 @@ refreshTable(); calc(1); calc(2);
 </script>
 </body>
 </html>
+
