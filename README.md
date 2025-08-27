@@ -47,7 +47,7 @@ Permite llevar la cuenta de **dos equipos a la vez**, con temporizadores, prepar
 
 ---
 
-## LICENCIA
+## 📄 LICENCIA
 Todos los materiales de MAD-BOT se distribuyen bajo licencia CC BY-NC-SA 4.0
 
 ---
