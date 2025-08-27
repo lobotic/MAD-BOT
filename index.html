@@ -1,299 +1,289 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Calculadora de Puntuaciones</title>
-  <style>
-    /* ================================
-       ESTILOS (CSS)
-       Aquí se decide cómo se ve la página:
-       colores, tamaños, posiciones, etc.
-       ================================= */
+<meta charset="UTF-8">
+<style>
+body { font-family: Arial, sans-serif; background-color: #470f18; color: #f1a140; }
 
-    /* El cuerpo de la página */
-    body {
-      font-family: Arial, sans-serif;  /* Fuente de letras */
-      margin: 20px;                    /* Espacio alrededor */
-      background-color: #f8f8f8;       /* Color de fondo */
-    }
+/* Header en 3 columnas centradas */
+header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  text-align: center;
+  margin: 10px;
+}
+header img { width: 206px; justify-self: center; }
+.timers { font-size: 1.5em; }
 
-    /* El encabezado donde van los temporizadores y el logo */
-    header {
-      display: grid;                        /* Usamos cuadrícula */
-      grid-template-columns: 1fr auto 1fr;  /* Tres columnas: izquierda, centro, derecha */
-      align-items: center;                  /* Centrar verticalmente */
-      text-align: center;                   /* Centrar el texto */
-      margin: 10px;
-    }
-
-    /* La imagen del logo */
-    header img {
-      width: 206px;         /* Tamaño del logo */
-      justify-self: center; /* Centrarlo en su columna */
-    }
-
-    /* Estilo para los números de los temporizadores */
-    .timers {
-      font-size: 1.5em;   /* Tamaño grande */
-    }
-
-    /* Cada bloque de equipo va en un recuadro blanco */
-    section {
-      margin-top: 20px;          /* Separación entre secciones */
-      background: #fff;          /* Fondo blanco */
-      padding: 10px;             /* Espacio interior */
-      border-radius: 8px;        /* Bordes redondeados */
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra ligera */
-    }
-
-    /* Títulos dentro de las secciones */
-    h2 {
-      margin-top: 0;
-    }
-
-    /* Cada fila con un dato o selector */
-    .row {
-      margin: 5px 0;
-    }
-
-    /* Botones */
-    button {
-      margin: 2px;
-      padding: 5px 10px;
-    }
-  </style>
+.columns { display: flex; justify-content: space-around; margin: 20px; }
+.team { border: 2px solid #b6c0c0; padding: 15px; border-radius: 10px; width: 45%; background: #5a1a24; text-align: left; }
+.team h2 { color: #f0dcc0; text-align: center; }
+.team input, .team select { margin: 5px; padding: 5px; }
+button { margin: 5px; padding: 8px 16px; border: none; border-radius: 8px; background-color: #e44942; color: #fff; font-weight: bold; cursor: pointer; }
+button.secondary { background-color: #b6c0c0; color: #000; }
+table { margin: 20px auto; border-collapse: collapse; background: #5a1a24; width: 90%; }
+th, td { border: 1px solid #f0dcc0; padding: 8px; text-align: center; color: #f0dcc0; }
+.team-sections { display: flex; justify-content: space-between; }
+.team-section { width: 48%; }
+#table td button { margin:0 auto; display:block; }
+.buttons-container { display:flex; justify-content:center; gap:10px; margin:20px 0; }
+</style>
 </head>
 <body>
-  <!-- ================================
-       ENCABEZADO (HTML)
-       Contiene los temporizadores y el logo
-       ================================= -->
-  <header>
-    <!-- Temporizador de Preparación -->
-    <div class="timers">
-      Preparación: <span id="prepTimer">60</span>s
-      <button onclick="startPrep()">▶</button>
-      <button onclick="resetPrep()">⟳</button>
-    </div>
 
-    <!-- Logo en el centro -->
-    <img src="logo.png" alt="Logo">
+<header>
+  <div class="timers">
+    <p>Preparación: <span id="prepTimer">30</span> s</p>
+    <button onclick="startPrep()">Iniciar</button>
+    <button onclick="resetPrep()">Reset</button>
+  </div>
+  <img src="MADBOTLogo.png" alt="MAD-BOT Logo">
+  <div class="timers">
+    <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
+    <button onclick="startMain()">Iniciar</button>
+    <button onclick="resetMain()">Reset</button>
+  </div>
+</header>
 
-    <!-- Temporizador de la Partida -->
-    <div class="timers">
-      Partida: <span id="mainTimer">120</span>s
-      <button onclick="startMain()">▶</button>
-      <button onclick="resetMain()">⟳</button>
-    </div>
-  </header>
-
-  <!-- ================================
-       EQUIPO 1
-       Aquí se introducen los datos de puntuación del primer equipo
-       ================================= -->
-  <section>
+<div class="columns">
+  <!-- Equipo 1 -->
+  <div class="team">
     <h2>Equipo 1</h2>
-    <div class="row">Nombre: <input id="team1_name" type="text"></div>
-    <div class="row">Categoría: 
-      <select id="team1_cat">
-        <option value="">--Seleccionar--</option>
-        <option>Junior</option>
-        <option>Senior</option>
-      </select>
-    </div>
-    <div class="row">Ronda: <input id="team1_round" type="number" value="1" min="1"></div>
+    <label>Nombre: <input id="team1_name"></label><br>
+    <label>Categoría: <select id="team1_cat"><option>Primaria</option><option>Secundaria</option></select></label>
+    <label>Ronda: <input type="number" id="team1_round" value="1" min="1"></label>
 
-    <!-- Clasificación de residuos -->
-    <div class="row">Azules: <input id="blue1" type="number" value="0" min="0"></div>
-    <div class="row">Amarillos: <input id="yellow1" type="number" value="0" min="0"></div>
-    <div class="row">Verdes: <input id="green1" type="number" value="0" min="0"></div>
-    <div class="row">Mal clasificados: <input id="misSorted1" type="number" value="0" min="0"></div>
-
-    <!-- Árboles -->
-    <div class="row">Árboles colocados:
-      <select id="trees1">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-      </select>
+    <div class="team-sections">
+      <div class="team-section">
+        <h3>Reciclaje</h3>
+        Azul: <input type="number" id="blue1" min="0" max="3" value="0"><br>
+        Amarillo: <input type="number" id="yellow1" min="0" max="3" value="0"><br>
+        Verde: <input type="number" id="green1" min="0" max="3" value="0"><br>
+        Mal reciclados: <input type="number" id="misSorted1" min="0" value="0"><br>
+      </div>
+      <div class="team-section">
+        <h3>Reforestación</h3>
+        Árboles colocados: 
+        <select id="trees1"><option value="0">0</option><option value="1">1 árbol</option><option value="2">2 árboles</option></select><br>
+        Diana 1: <select id="diana1a"><option value="0">Ninguna</option><option value="1">1 punto</option><option value="3">3 puntos</option><option value="5">5 puntos</option><option value="10">10 puntos</option><option value="20">20 puntos</option></select><br>
+        Diana 2: <select id="diana1b"><option value="0">Ninguna</option><option value="1">1 punto</option><option value="3">3 puntos</option><option value="5">5 puntos</option><option value="10">10 puntos</option><option value="20">20 puntos</option></select>
+      </div>
     </div>
 
-    <!-- Dianas -->
-    <div class="row">Diana A:
-      <select id="diana1a">
-        <option value="0">Fallida</option>
-        <option value="1">Conseguida</option>
-      </select>
-    </div>
-    <div class="row">Diana B:
-      <select id="diana1b">
-        <option value="0">Fallida</option>
-        <option value="1">Conseguida</option>
-      </select>
-    </div>
+    <h3>Otros</h3>
+    <label><input type="checkbox" id="finish1"> Acabar en zona FIN (10 pts)</label><br>
+    <label><input type="checkbox" id="allDrive1"> Todos conducen (15 pts)</label><br>
+    <label><input type="checkbox" id="prepPenalty1"> Penalización por preparación (−15 pts)</label><br>
+    <label><input type="checkbox" id="fallenTrees1"> Penalización por árboles caídos (−10 pts)</label><br>
 
-    <!-- Otros logros -->
-    <div class="row"><input id="finish1" type="checkbox"> Robot regresa a base</div>
-    <div class="row"><input id="allDrive1" type="checkbox"> Todos los robots se mueven</div>
-    <div class="row"><input id="prepPenalty1" type="checkbox"> Penalización por preparación</div>
-    <div class="row"><input id="fallenTrees1" type="checkbox"> Árboles caídos</div>
+    <h3>Total: <span id="total1">0</span> pts</h3>
+    <div style="text-align:right; margin-top:10px;"><button onclick="resetTeam(1)">Reset Equipo 1</button></div>
+  </div>
 
-    <!-- Total de puntos -->
-    <div class="row">Total: <span id="total1">0</span></div>
-    <button onclick="calculateScore(1)">Calcular</button>
-    <button onclick="resetTeam(1)">Reset Equipo</button>
-  </section>
-
-  <!-- ================================
-       EQUIPO 2
-       (idéntico al 1, con sufijo "2" en los IDs)
-       ================================= -->
-  <section>
+  <!-- Equipo 2 -->
+  <div class="team">
     <h2>Equipo 2</h2>
-    <div class="row">Nombre: <input id="team2_name" type="text"></div>
-    <div class="row">Categoría: 
-      <select id="team2_cat">
-        <option value="">--Seleccionar--</option>
-        <option>Junior</option>
-        <option>Senior</option>
-      </select>
+    <label>Nombre: <input id="team2_name"></label><br>
+    <label>Categoría: <select id="team2_cat"><option>Primaria</option><option>Secundaria</option></select></label>
+    <label>Ronda: <input type="number" id="team2_round" value="1" min="1"></label>
+
+    <div class="team-sections">
+      <div class="team-section">
+        <h3>Reciclaje</h3>
+        Azul: <input type="number" id="blue2" min="0" max="3" value="0"><br>
+        Amarillo: <input type="number" id="yellow2" min="0" max="3" value="0"><br>
+        Verde: <input type="number" id="green2" min="0" max="3" value="0"><br>
+        Mal reciclados: <input type="number" id="misSorted2" min="0" value="0"><br>
+      </div>
+      <div class="team-section">
+        <h3>Reforestación</h3>
+        Árboles colocados: 
+        <select id="trees2"><option value="0">0</option><option value="1">1 árbol</option><option value="2">2 árboles</option></select><br>
+        Diana 1: <select id="diana2a"><option value="0">Ninguna</option><option value="1">1 punto</option><option value="3">3 puntos</option><option value="5">5 puntos</option><option value="10">10 puntos</option><option value="20">20 puntos</option></select><br>
+        Diana 2: <select id="diana2b"><option value="0">Ninguna</option><option value="1">1 punto</option><option value="3">3 puntos</option><option value="5">5 puntos</option><option value="10">10 puntos</option><option value="20">20 puntos</option></select>
+      </div>
     </div>
-    <div class="row">Ronda: <input id="team2_round" type="number" value="1" min="1"></div>
-    <div class="row">Azules: <input id="blue2" type="number" value="0" min="0"></div>
-    <div class="row">Amarillos: <input id="yellow2" type="number" value="0" min="0"></div>
-    <div class="row">Verdes: <input id="green2" type="number" value="0" min="0"></div>
-    <div class="row">Mal clasificados: <input id="misSorted2" type="number" value="0" min="0"></div>
-    <div class="row">Árboles colocados:
-      <select id="trees2"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select>
-    </div>
-    <div class="row">Diana A: <select id="diana2a"><option value="0">Fallida</option><option value="1">Conseguida</option></select></div>
-    <div class="row">Diana B: <select id="diana2b"><option value="0">Fallida</option><option value="1">Conseguida</option></select></div>
-    <div class="row"><input id="finish2" type="checkbox"> Robot regresa a base</div>
-    <div class="row"><input id="allDrive2" type="checkbox"> Todos los robots se mueven</div>
-    <div class="row"><input id="prepPenalty2" type="checkbox"> Penalización por preparación</div>
-    <div class="row"><input id="fallenTrees2" type="checkbox"> Árboles caídos</div>
-    <div class="row">Total: <span id="total2">0</span></div>
-    <button onclick="calculateScore(2)">Calcular</button>
-    <button onclick="resetTeam(2)">Reset Equipo</button>
-  </section>
 
-  <!-- ================================
-       SCRIPTS (JS)
-       Aquí está la "lógica": temporizadores y cálculo de puntuaciones
-       ================================= -->
-  <script>
-    /* ==========
-       TEMPORIZADORES
-       ========== */
+    <h3>Otros</h3>
+    <label><input type="checkbox" id="finish2"> Acabar en zona FIN (10 pts)</label><br>
+    <label><input type="checkbox" id="allDrive2"> Todos conducen (15 pts)</label><br>
+    <label><input type="checkbox" id="prepPenalty2"> Penalización por preparación (−15 pts)</label><br>
+    <label><input type="checkbox" id="fallenTrees2"> Penalización por árboles caídos (−10 pts)</label><br>
 
-    // Variables para controlar los contadores
-    let prepTimer = 60;     // Tiempo de preparación
-    let mainTimer = 120;    // Tiempo de partida
-    let intervalPrep = null;
-    let intervalMain = null;
+    <h3>Total: <span id="total2">0</span> pts</h3>
+    <div style="text-align:right; margin-top:10px;"><button onclick="resetTeam(2)">Reset Equipo 2</button></div>
+  </div>
+</div>
 
-    // Iniciar el temporizador de preparación
-    function startPrep(){
-      if(intervalPrep) return; // Evitar múltiples inicios
-      intervalPrep = setInterval(()=>{
-        if(prepTimer > 0){
-          prepTimer--;
-          document.getElementById("prepTimer").textContent = prepTimer;
-        }
-      },1000); // cada segundo
-    }
+<div class="buttons-container">
+  <button id="save">Guardar Resultados</button>
+  <button id="export">Exportar CSV</button>
+  <button id="reset">Reiniciar Tabla</button>
+  <button id="finalScoresBtn">Puntuación Final</button>
+</div>
 
-    // Reiniciar el temporizador de preparación
-    function resetPrep(){
-      clearInterval(intervalPrep);
-      intervalPrep=null;
-      prepTimer=60;
-      document.getElementById("prepTimer").textContent=prepTimer;
-    }
+<!-- Tabla de resultados por ronda -->
+<table id="table">
+  <thead>
+    <tr>
+      <th>Puesto</th><th>Equipo</th><th>Categoría</th><th>Ronda</th><th>Total</th><th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
-    // Iniciar el temporizador principal (partida)
-    function startMain(){
-      if(intervalMain) return;
-      intervalMain = setInterval(()=>{
-        if(mainTimer>0){
-          mainTimer--;
-          document.getElementById("mainTimer").textContent=mainTimer;
-        }
-      },1000);
-    }
+<!-- Tabla de puntuación final acumulada -->
+<table id="finalTable">
+  <thead>
+    <tr>
+      <th>Puesto</th><th>Equipo</th><th>Categoría</th><th>Rondas</th><th>Total</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
-    // Reiniciar solo el temporizador de la partida
-    function resetMain(){
-      clearInterval(intervalMain);
-      intervalMain=null;
-      mainTimer=120;
-      document.getElementById("mainTimer").textContent=mainTimer;
-    }
+<script>
+let mainTimer=120, intervalMain=null;
+let prepTimer=30, intervalPrep=null;
 
-    /* ==========
-       CÁLCULO DE PUNTUACIONES
-       ========== */
+function beep(){ new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg").play(); }
 
-    function calculateScore(team){
-      let score=0;
+function startMain(){ 
+  if(intervalMain) return; 
+  intervalMain=setInterval(()=>{ 
+    mainTimer--; 
+    document.getElementById("mainTimer").textContent=mainTimer; 
+    if(mainTimer<=0){ 
+      clearInterval(intervalMain); 
+      intervalMain=null; 
+      beep(); 
+    } 
+  },1000);
+}
 
-      // Sumar puntos por clasificación
-      score += parseInt(document.getElementById("blue"+team).value)*5;
-      score += parseInt(document.getElementById("yellow"+team).value)*10;
-      score += parseInt(document.getElementById("green"+team).value)*15;
+function resetMain(){ 
+  clearInterval(intervalMain); 
+  intervalMain=null; 
+  mainTimer=120; 
+  document.getElementById("mainTimer").textContent=mainTimer; 
+}
 
-      // Restar puntos por errores
-      score -= parseInt(document.getElementById("misSorted"+team).value)*5;
+function startPrep(){ 
+  if(intervalPrep) return; 
+  intervalPrep=setInterval(()=>{ 
+    if(prepTimer>0){ 
+      prepTimer--; 
+      document.getElementById("prepTimer").textContent=prepTimer; 
+      if(prepTimer===0) beep(); 
+    } else { 
+      clearInterval(intervalPrep); 
+      intervalPrep=null; 
+    } 
+  },1000);
+}
 
-      // Puntos por árboles colocados
-      score += parseInt(document.getElementById("trees"+team).value)*10;
+function resetPrep(){ 
+  clearInterval(intervalPrep); 
+  intervalPrep=null; 
+  prepTimer=30; 
+  document.getElementById("prepTimer").textContent=prepTimer; 
+  ["prepPenalty1","prepPenalty2"].forEach(id=>document.getElementById(id).checked=false); 
+  calc(1); calc(2); 
+}
 
-      // Puntos por dianas
-      score += parseInt(document.getElementById("diana"+team+"a").value)*20;
-      score += parseInt(document.getElementById("diana"+team+"b").value)*20;
+function resetTeam(team){ 
+  document.getElementById("team"+team+"_name").value=""; 
+  document.getElementById("team"+team+"_cat").selectedIndex=0; 
+  document.getElementById("team"+team+"_round").value=1; 
+  ["blue","yellow","green","misSorted"].forEach(id=>{
+    let el=document.getElementById(id+team); 
+    if(el) el.value=0; 
+  });
+  ["trees"+team,"diana"+team+"a","diana"+team+"b"].forEach(id=>{
+    let el=document.getElementById(id); 
+    if(el) el.selectedIndex=0; 
+  });
+  ["finish","allDrive","prepPenalty","fallenTrees"].forEach(id=>{
+    let el=document.getElementById(id+team); 
+    if(el) el.checked=false; 
+  });
+  document.getElementById("total"+team).textContent=0;
+}
 
-      // Puntos extra (checkboxes)
-      if(document.getElementById("finish"+team).checked) score+=10;
-      if(document.getElementById("allDrive"+team).checked) score+=15;
+function calc(team){
+  let blue=+document.getElementById("blue"+team).value;
+  let yellow=+document.getElementById("yellow"+team).value;
+  let green=+document.getElementById("green"+team).value;
+  let mis=+document.getElementById("misSorted"+team).value;
+  let rec=0; [blue,yellow,green].forEach(c=>{ if(c===1) rec+=2; else if(c===2) rec+=5; else if(c===3) rec+=15; }); rec -= mis*5;
+  if(blue>0 && yellow>0 && green>0) rec+=10;
+  let trees=+document.getElementById("trees"+team).value;
+  let ref=(trees===1?5:trees===2?15:0)+ +document.getElementById("diana"+team+"a").value + +document.getElementById("diana"+team+"b").value;
+  let oth=0;
+  if(document.getElementById("finish"+team).checked) oth+=10;
+  if(document.getElementById("allDrive"+team).checked) oth+=15;
+  if(document.getElementById("prepPenalty"+team).checked) oth-=15;
+  if(document.getElementById("fallenTrees"+team).checked) oth-=10;
+  document.getElementById("total"+team).textContent=rec+ref+oth;
+  return rec+ref+oth;
+}
 
-      // Penalizaciones (quitan puntos)
-      if(document.getElementById("prepPenalty"+team).checked) score-=10;
-      if(document.getElementById("fallenTrees"+team).checked) score-=5;
+document.querySelectorAll("input,select").forEach(el=>el.addEventListener("change", ()=>{calc(1);calc(2);})); 
 
-      // Mostrar total
-      document.getElementById("total"+team).textContent=score;
-    }
+function loadEntries(){ return JSON.parse(localStorage.getItem('madbot')||"[]"); }
+function saveEntries(d){ localStorage.setItem('madbot',JSON.stringify(d)); }
 
-    /* ==========
-       RESET DE EQUIPO
-       Borra todos los datos introducidos en un equipo
-       ========== */
-    function resetTeam(team){
-      document.getElementById("team"+team+"_name").value="";
-      document.getElementById("team"+team+"_cat").selectedIndex=0;
-      document.getElementById("team"+team+"_round").value=1;
+function refreshTable(){ 
+  let tb=document.querySelector("#table tbody"); 
+  tb.innerHTML="";
+  let data = loadEntries();
+  data.sort((a,b)=>b.total-a.total);
+  data.forEach((e,i)=>{ 
+    let tr=document.createElement("tr"); 
+    tr.innerHTML=`<td>${i+1}</td><td>${e.team}</td><td>${e.cat}</td><td>${e.round}</td><td>${e.total}</td><td><button onclick="deleteRow(${i})">Borrar</button></td>`; 
+    tb.appendChild(tr); 
+  });
+}
 
-      // Poner a 0 las casillas de números
-      ["blue","yellow","green","misSorted"].forEach(id=>{
-        let el=document.getElementById(id+team);
-        if(el) el.value=0;
-      });
+function deleteRow(index){ let data=loadEntries(); data.splice(index,1); saveEntries(data); refreshTable(); }
 
-      // Poner a 0 los desplegables
-      ["trees"+team,"diana"+team+"a","diana"+team+"b"].forEach(id=>{
-        let el=document.getElementById(id);
-        if(el) el.selectedIndex=0;
-      });
+document.getElementById("save").onclick=()=>{
+  [1,2].forEach(t=>{
+    let entry={ team:document.getElementById("team"+t+"_name").value, cat:document.getElementById("team"+t+"_cat").value, round:document.getElementById("team"+t+"_round").value, total:calc(t) };
+    let data=loadEntries(); data.push(entry); saveEntries(data);
+  });
+  refreshTable();
+};
 
-      // Desmarcar las casillas de verificación
-      ["finish","allDrive","prepPenalty","fallenTrees"].forEach(id=>{
-        let el=document.getElementById(id+team);
-        if(el) el.checked=false;
-      });
+document.getElementById("export").onclick=()=>{
+  let data=loadEntries(); if(!data.length){alert("No hay datos");return;}
+  let csv="Puesto,Equipo,Categoría,Ronda,Total\n"+data.map((e,i)=>[i+1,e.team,e.cat,e.round,e.total].join(",")).join("\n");
+  let blob=new Blob([csv],{type:"text/csv"}); let a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="madbot.csv"; a.click();
+};
 
-      // Poner el total a 0
-      document.getElementById("total"+team).textContent=0;
-    }
-  </script>
+document.getElementById("reset").onclick=()=>{ localStorage.removeItem("madbot"); refreshTable(); resetTeam(1); resetTeam(2); resetPrep(); resetMain(); };
+
+// Clasificación final acumulada
+document.getElementById("finalScoresBtn").onclick=()=>{
+  let data=loadEntries();
+  let finalScores = {};
+  data.forEach(e=>{
+    if(!finalScores[e.team]) finalScores[e.team]={team:e.team, cat:e.cat, total:0, rounds:0};
+    finalScores[e.team].total += e.total;
+    finalScores[e.team].rounds += 1;
+  });
+  let finalArray = Object.values(finalScores).sort((a,b)=>b.total-a.total);
+  let tb = document.querySelector("#finalTable tbody");
+  tb.innerHTML = "";
+  finalArray.forEach((e,i)=>{
+    let tr = document.createElement("tr");
+    tr.innerHTML = `<td>${i+1}</td><td>${e.team}</td><td>${e.cat}</td><td>${e.rounds}</td><td>${e.total}</td>`;
+    tb.appendChild(tr);
+  });
+};
+
+refreshTable(); calc(1); calc(2);
+</script>
 </body>
 </html>
