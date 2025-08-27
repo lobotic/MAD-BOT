@@ -3,28 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background-color: #470f18;
-  color: #f1a140;
-}
-header {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 10px;
-}
+body { font-family: Arial, sans-serif; background-color: #470f18; color: #f1a140; }
+header { display: flex; justify-content: space-around; align-items: center; margin: 10px; }
 header img { width: 206px; } /* 20% más grande */
 .timers { font-size: 1.5em; display: flex; justify-content: space-around; width: 80%; }
 .columns { display: flex; justify-content: space-around; margin: 20px; }
-.team {
-  border: 2px solid #b6c0c0;
-  padding: 15px;
-  border-radius: 10px;
-  width: 45%;
-  background: #5a1a24;
-  text-align: left;
-}
+.team { border: 2px solid #b6c0c0; padding: 15px; border-radius: 10px; width: 45%; background: #5a1a24; text-align: left; }
 .team h2 { color: #f0dcc0; text-align: center; }
 .team input, .team select { margin: 5px; padding: 5px; }
 button { margin: 5px; padding: 8px 16px; border: none; border-radius: 8px; background-color: #e44942; color: #fff; font-weight: bold; cursor: pointer; }
@@ -129,25 +113,24 @@ th, td { border: 1px solid #f0dcc0; padding: 8px; text-align: center; color: #f0
   <button id="save">Guardar Resultados</button>
   <button id="export">Exportar CSV</button>
   <button id="reset">Reiniciar Tabla</button>
-  <button id="finalScore">Puntuación Final</button>
+  <button id="finalScoresBtn">Puntuación Final</button>
 </div>
 
 <!-- Tabla de resultados por ronda -->
 <table id="table">
   <thead>
     <tr>
-      <th>FechaHora</th><th>Equipo</th><th>Categoría</th><th>Ronda</th><th>Total</th><th>Acciones</th>
+      <th>Puesto</th><th>Equipo</th><th>Categoría</th><th>Ronda</th><th>Total</th><th>Acciones</th>
     </tr>
   </thead>
   <tbody></tbody>
 </table>
 
-<!-- Tabla de clasificación final -->
-<h3 style="text-align:center; margin-top:20px;">Clasificación Final</h3>
+<!-- Tabla de puntuación final acumulada -->
 <table id="finalTable">
   <thead>
     <tr>
-      <th>Puesto</th><th>Equipo</th><th>Categoría</th><th>Participaciones</th><th>Total</th>
+      <th>Puesto</th><th>Equipo</th><th>Categoría</th><th>Rondas</th><th>Total</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -197,50 +180,47 @@ document.querySelectorAll("input,select").forEach(el=>el.addEventListener("chang
 
 function loadEntries(){ return JSON.parse(localStorage.getItem('madbot')||"[]"); }
 function saveEntries(d){ localStorage.setItem('madbot',JSON.stringify(d)); }
+
 function refreshTable(){ 
-  let tb=document.querySelector("#table tbody"); tb.innerHTML="";
-  loadEntries().forEach((e,i)=>{ 
+  let tb=document.querySelector("#table tbody"); 
+  tb.innerHTML="";
+  let data = loadEntries();
+  data.sort((a,b)=>b.total-a.total);
+  data.forEach((e,i)=>{ 
     let tr=document.createElement("tr"); 
-    tr.innerHTML=`<td>${e.time}</td><td>${e.team}</td><td>${e.cat}</td><td>${e.round}</td><td>${e.total}</td><td><button onclick="deleteRow(${i})">Borrar</button></td>`; 
+    tr.innerHTML=`<td>${i+1}</td><td>${e.team}</td><td>${e.cat}</td><td>${e.round}</td><td>${e.total}</td><td><button onclick="deleteRow(${i})">Borrar</button></td>`; 
     tb.appendChild(tr); 
   });
 }
+
 function deleteRow(index){ let data=loadEntries(); data.splice(index,1); saveEntries(data); refreshTable(); }
 
 document.getElementById("save").onclick=()=>{
   [1,2].forEach(t=>{
-    let entry={ time:new Date().toLocaleString(), team:document.getElementById("team"+t+"_name").value, cat:document.getElementById("team"+t+"_cat").value, round:document.getElementById("team"+t+"_round").value, total:calc(t) };
-    let data=loadEntries(); data.push(entry); data.sort((a,b)=>b.total-a.total); saveEntries(data);
+    let entry={ team:document.getElementById("team"+t+"_name").value, cat:document.getElementById("team"+t+"_cat").value, round:document.getElementById("team"+t+"_round").value, total:calc(t) };
+    let data=loadEntries(); data.push(entry); saveEntries(data);
   });
   refreshTable();
 };
 
 document.getElementById("export").onclick=()=>{
   let data=loadEntries(); if(!data.length){alert("No hay datos");return;}
-  let csv="FechaHora,Equipo,Categoría,Ronda,Total\n"+data.map(e=>[e.time,e.team,e.cat,e.round,e.total].join(",")).join("\n");
+  let csv="Puesto,Equipo,Categoría,Ronda,Total\n"+data.map((e,i)=>[i+1,e.team,e.cat,e.round,e.total].join(",")).join("\n");
   let blob=new Blob([csv],{type:"text/csv"}); let a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="madbot.csv"; a.click();
 };
 
-document.getElementById("reset").onclick=()=>{ 
-  localStorage.removeItem("madbot"); 
-  refreshTable(); 
-  resetTeam(1); resetTeam(2); resetPrep(); resetMain(); 
-  document.querySelector("#finalTable tbody").innerHTML="";
-};
+document.getElementById("reset").onclick=()=>{ localStorage.removeItem("madbot"); refreshTable(); resetTeam(1); resetTeam(2); resetPrep(); resetMain(); };
 
-// Botón Puntuación Final
-document.getElementById("finalScore").onclick = () => {
-  let data = loadEntries();
+// Clasificación final acumulada
+document.getElementById("finalScoresBtn").onclick=()=>{
+  let data=loadEntries();
   let finalScores = {};
-  data.forEach(e => {
-    if(finalScores[e.team]){
-      finalScores[e.team].total += e.total;
-      finalScores[e.team].rounds += 1;
-    } else {
-      finalScores[e.team] = {team: e.team, cat: e.cat, total: e.total, rounds: 1};
-    }
+  data.forEach(e=>{
+    if(!finalScores[e.team]) finalScores[e.team]={team:e.team, cat:e.cat, total:0, rounds:0};
+    finalScores[e.team].total += e.total;
+    finalScores[e.team].rounds += 1;
   });
-  let finalArray = Object.values(finalScores).sort((a,b) => b.total - a.total);
+  let finalArray = Object.values(finalScores).sort((a,b)=>b.total-a.total);
   let tb = document.querySelector("#finalTable tbody");
   tb.innerHTML = "";
   finalArray.forEach((e,i)=>{
