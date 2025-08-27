@@ -26,20 +26,6 @@ Creo que es de vital importancia para facilitar el acceso a cuanta más gente me
 Aplicación web para gestionar la puntuación en la competición de robótica escolar **MAD-BOT**.  
 Permite llevar la cuenta de **dos equipos a la vez**, con temporizadores, preparación, penalizaciones y checklist de arbitraje.
 
-### Características
-
-- **Temporizadores**:
-  - 120 segundos de partida (con sonido al finalizar).
-  - 30 segundos de preparación general (con sonido al finalizar).
-  - Control independiente de cada temporizador.  
-- **Sistema de puntuación**:
-  - Reciclaje con cilindros de colores (azul, amarillo, verde, mal reciclados).
-  - Reforestación con árboles y dianas (2 dianas por equipo).
-  - Bonus automático si el equipo tiene puntuación en los tres colores de reciclaje.
-  - Penalizaciones por preparación y árboles caídos.  
-- **Funciona en navegador.**
-
----
 
 ### 🖥️ Cómo usarlo
 
