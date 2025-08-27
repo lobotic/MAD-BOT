@@ -28,7 +28,7 @@ Permite llevar la cuenta de **dos equipos a la vez**, con temporizadores, prepar
   - Reforestación con árboles y dianas (2 dianas por equipo).
   - Bonus automático si el equipo tiene puntuación en los tres colores de reciclaje.
   - Penalizaciones por preparación y árboles caídos.  
-- Funciona en cualquier navegador moderno.
+- **Funciona en navegador.**
 
 ---
 
