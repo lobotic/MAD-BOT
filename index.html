@@ -4,107 +4,95 @@
 <meta charset="UTF-8">
 <title>MAD-BOT Score System</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #470f18;
-    color: #f1a140;
-    text-align: center;
-  }
-  header {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 10px;
-  }
-  header img {
-    max-width: 120px;
-  }
-  .timers { 
-    font-size: 1.5em; 
-    display: flex; 
-    justify-content: space-around;
-    width: 80%;
-  }
-  .columns {
-    display: flex;
-    justify-content: space-around;
-    margin: 20px;
-  }
-  .team {
-    border: 2px solid #b6c0c0;
-    padding: 15px;
-    border-radius: 10px;
-    width: 45%;
-    background: #5a1a24;
-    text-align: left;
-  }
-  .team h2 { color: #f0dcc0; text-align: center; }
-  .team input, .team select {
-    margin: 5px;
-    padding: 5px;
-  }
-  button {
-    margin: 5px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 8px;
-    background-color: #e44942;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  button.secondary { background-color: #b6c0c0; color: #000; }
-  table {
-    margin: 20px auto;
-    border-collapse: collapse;
-    background: #5a1a24;
-    width: 90%;
-  }
-  th, td {
-    border: 1px solid #f0dcc0;
-    padding: 8px;
-    text-align: center;
-    color: #f0dcc0;
-  }
-  .team-sections {
-    display: flex;
-    justify-content: space-between;
-  }
-  .team-section {
-    width: 48%;
-  }
+body {
+  font-family: Arial, sans-serif;
+  background-color: #470f18;
+  color: #f1a140;
+  text-align: center;
+}
+header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px;
+}
+header img {
+  max-width: 144px; /* 20% más grande */
+}
+.timers { 
+  font-size: 1.5em; 
+  display: flex; 
+  justify-content: space-around;
+  width: 80%;
+}
+.columns {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+}
+.team {
+  border: 2px solid #b6c0c0;
+  padding: 15px;
+  border-radius: 10px;
+  width: 45%;
+  background: #5a1a24;
+  text-align: left;
+}
+.team h2 { color: #f0dcc0; text-align: center; }
+.team input, .team select { margin: 5px; padding: 5px; }
+button {
+  margin: 5px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #e44942;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+button.secondary { background-color: #b6c0c0; color: #000; }
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: #5a1a24;
+  width: 90%;
+}
+th, td {
+  border: 1px solid #f0dcc0;
+  padding: 8px;
+  text-align: center;
+  color: #f0dcc0;
+}
+.team-sections { display: flex; justify-content: space-between; }
+.team-section { width: 48%; }
 </style>
 </head>
 <body>
 <header>
-  <img src="MADBOTLogo.png" alt="MAD-BOT Logo">
   <div class="timers">
-    <div>
-      <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
-      <button onclick="startMain()">Iniciar</button>
-      <button onclick="resetMain()">Reset</button>
-    </div>
     <div>
       <p>Preparación: <span id="prepTimer">30</span> s</p>
       <button onclick="startPrep()">Iniciar</button>
       <button onclick="resetPrep()">Reset</button>
     </div>
+    <img src="MADBOTLogo.png" alt="MAD-BOT Logo">
+    <div>
+      <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
+      <button onclick="startMain()">Iniciar</button>
+      <button onclick="resetMain()">Reset</button>
+    </div>
   </div>
 </header>
 
-<!-- Columnas de equipos -->
 <div class="columns">
   <!-- Equipo 1 -->
   <div class="team">
     <h2>Equipo 1</h2>
     <label>Nombre: <input id="team1_name"></label><br>
-    <label>Categoría: 
-      <select id="team1_cat"><option>Primaria</option><option>Secundaria</option></select>
-    </label>
+    <label>Categoría: <select id="team1_cat"><option>Primaria</option><option>Secundaria</option></select></label>
     <label>Ronda: <input type="number" id="team1_round" value="1" min="1"></label>
 
     <div class="team-sections">
-      <!-- Reciclaje -->
       <div class="team-section">
         <h3>Reciclaje</h3>
         Azul: <input type="number" id="blue1" min="0" max="3" value="0"><br>
@@ -112,41 +100,30 @@
         Verde: <input type="number" id="green1" min="0" max="3" value="0"><br>
         Mal reciclados: <input type="number" id="misSorted1" min="0" value="0"><br>
       </div>
-      <!-- Reforestación -->
       <div class="team-section">
         <h3>Reforestación</h3>
         Árboles colocados: 
         <select id="trees1">
-          <option value="0">0</option>
-          <option value="1">1 árbol</option>
-          <option value="2">2 árboles</option>
+          <option value="0">0</option><option value="1">1 árbol</option><option value="2">2 árboles</option>
         </select><br>
-        Diana 1:
+        Diana 1: 
         <select id="diana1a">
-          <option value="0">Ninguna</option>
-          <option value="1">1 punto</option>
-          <option value="3">3 puntos</option>
-          <option value="5">5 puntos</option>
-          <option value="10">10 puntos</option>
-          <option value="20">20 puntos</option>
+          <option value="0">Ninguna</option><option value="1">1 punto</option><option value="3">3 puntos</option>
+          <option value="5">5 puntos</option><option value="10">10 puntos</option><option value="20">20 puntos</option>
         </select><br>
-        Diana 2:
+        Diana 2: 
         <select id="diana1b">
-          <option value="0">Ninguna</option>
-          <option value="1">1 punto</option>
-          <option value="3">3 puntos</option>
-          <option value="5">5 puntos</option>
-          <option value="10">10 puntos</option>
-          <option value="20">20 puntos</option>
-        </select><br>
+          <option value="0">Ninguna</option><option value="1">1 punto</option><option value="3">3 puntos</option>
+          <option value="5">5 puntos</option><option value="10">10 puntos</option><option value="20">20 puntos</option>
+        </select>
       </div>
     </div>
 
-    <!-- Otros -->
     <h3>Otros</h3>
     <label><input type="checkbox" id="finish1"> Acabar en zona FIN (10 pts)</label><br>
     <label><input type="checkbox" id="allDrive1"> Todos conducen (15 pts)</label><br>
     <label><input type="checkbox" id="prepPenalty1"> Penalización por preparación (−15 pts)</label><br>
+    <label><input type="checkbox" id="fallenTrees1"> Penalización por árboles caídos (−10 pts)</label><br>
 
     <h3>Total: <span id="total1">0</span> pts</h3>
   </div>
@@ -155,13 +132,10 @@
   <div class="team">
     <h2>Equipo 2</h2>
     <label>Nombre: <input id="team2_name"></label><br>
-    <label>Categoría: 
-      <select id="team2_cat"><option>Primaria</option><option>Secundaria</option></select>
-    </label>
+    <label>Categoría: <select id="team2_cat"><option>Primaria</option><option>Secundaria</option></select></label>
     <label>Ronda: <input type="number" id="team2_round" value="1" min="1"></label>
 
     <div class="team-sections">
-      <!-- Reciclaje -->
       <div class="team-section">
         <h3>Reciclaje</h3>
         Azul: <input type="number" id="blue2" min="0" max="3" value="0"><br>
@@ -169,54 +143,41 @@
         Verde: <input type="number" id="green2" min="0" max="3" value="0"><br>
         Mal reciclados: <input type="number" id="misSorted2" min="0" value="0"><br>
       </div>
-      <!-- Reforestación -->
       <div class="team-section">
         <h3>Reforestación</h3>
         Árboles colocados: 
         <select id="trees2">
-          <option value="0">0</option>
-          <option value="1">1 árbol</option>
-          <option value="2">2 árboles</option>
+          <option value="0">0</option><option value="1">1 árbol</option><option value="2">2 árboles</option>
         </select><br>
-        Diana 1:
+        Diana 1: 
         <select id="diana2a">
-          <option value="0">Ninguna</option>
-          <option value="1">1 punto</option>
-          <option value="3">3 puntos</option>
-          <option value="5">5 puntos</option>
-          <option value="10">10 puntos</option>
-          <option value="20">20 puntos</option>
+          <option value="0">Ninguna</option><option value="1">1 punto</option><option value="3">3 puntos</option>
+          <option value="5">5 puntos</option><option value="10">10 puntos</option><option value="20">20 puntos</option>
         </select><br>
-        Diana 2:
+        Diana 2: 
         <select id="diana2b">
-          <option value="0">Ninguna</option>
-          <option value="1">1 punto</option>
-          <option value="3">3 puntos</option>
-          <option value="5">5 puntos</option>
-          <option value="10">10 puntos</option>
-          <option value="20">20 puntos</option>
-        </select><br>
+          <option value="0">Ninguna</option><option value="1">1 punto</option><option value="3">3 puntos</option>
+          <option value="5">5 puntos</option><option value="10">10 puntos</option><option value="20">20 puntos</option>
+        </select>
       </div>
     </div>
 
-    <!-- Otros -->
     <h3>Otros</h3>
     <label><input type="checkbox" id="finish2"> Acabar en zona FIN (10 pts)</label><br>
     <label><input type="checkbox" id="allDrive2"> Todos conducen (15 pts)</label><br>
     <label><input type="checkbox" id="prepPenalty2"> Penalización por preparación (−15 pts)</label><br>
+    <label><input type="checkbox" id="fallenTrees2"> Penalización por árboles caídos (−10 pts)</label><br>
 
     <h3>Total: <span id="total2">0</span> pts</h3>
   </div>
 </div>
 
-<!-- Botones globales -->
 <div>
   <button id="save">Guardar Resultados</button>
   <button id="export">Exportar CSV</button>
   <button id="reset">Reiniciar Tabla</button>
 </div>
 
-<!-- Tabla de resultados -->
 <table id="table">
   <thead>
     <tr>
@@ -245,14 +206,13 @@ function startMain(){
 function resetMain(){
   clearInterval(intervalMain); intervalMain=null;
   mainTimer=120; document.getElementById("mainTimer").textContent=mainTimer;
-  // Limpiar todos los campos de ambos equipos
   ["1","2"].forEach(t=>{
     document.getElementById("team"+t+"_name").value="";
     document.getElementById("team"+t+"_cat").selectedIndex=0;
     document.getElementById("team"+t+"_round").value=1;
     ["blue","yellow","green","misSorted"].forEach(id=>document.getElementById(id+t).value=0);
     ["trees","diana"+t+"a","diana"+t+"b"].forEach(id=>document.getElementById(id).value=0);
-    ["finish","allDrive","prepPenalty"].forEach(id=>document.getElementById(id+t).checked=false);
+    ["finish","allDrive","prepPenalty","fallenTrees"].forEach(id=>document.getElementById(id+t).checked=false);
     document.getElementById("total"+t).textContent=0;
   });
   resetPrep();
@@ -265,23 +225,19 @@ function startPrep(){
       prepTimer--;
       document.getElementById("prepTimer").textContent = prepTimer;
       if(prepTimer===0) beep();
-    } else {
-      clearInterval(intervalPrep);
-      intervalPrep=null;
-    }
+    } else { clearInterval(intervalPrep); intervalPrep=null; }
   },1000);
 }
 
 function resetPrep(){
-  clearInterval(intervalPrep);
-  intervalPrep=null;
+  clearInterval(intervalPrep); intervalPrep=null;
   prepTimer=30;
   document.getElementById("prepTimer").textContent=prepTimer;
   ["prepPenalty1","prepPenalty2"].forEach(id=>document.getElementById(id).checked=false);
   calc(1); calc(2);
 }
 
-// ==== CÁLCULO DE PUNTUACIÓN ====
+// ==== PUNTUACIÓN ====
 function calc(team){
   let blue=+document.getElementById("blue"+team).value;
   let yellow=+document.getElementById("yellow"+team).value;
@@ -294,24 +250,27 @@ function calc(team){
     else if(c===3) rec+=15;
   });
   rec -= mis*5;
+  if(blue>0 && yellow>0 && green>0) rec+=10; // bonus reciclaje completo
+
   let trees=+document.getElementById("trees"+team).value;
   let ref=trees===1?5:trees===2?15:0;
   ref += +document.getElementById("diana"+team+"a").value;
   ref += +document.getElementById("diana"+team+"b").value;
+
   let oth=0;
   if(document.getElementById("finish"+team).checked) oth+=10;
   if(document.getElementById("allDrive"+team).checked) oth+=15;
   if(document.getElementById("prepPenalty"+team).checked) oth-=15;
+  if(document.getElementById("fallenTrees"+team).checked) oth-=10;
+
   let total=rec+ref+oth;
   document.getElementById("total"+team).textContent=total;
   return total;
 }
 
-document.querySelectorAll("input,select").forEach(el=>{
-  el.addEventListener("change", ()=>{calc(1);calc(2);});
-});
+document.querySelectorAll("input,select").forEach(el=>el.addEventListener("change", ()=>{calc(1);calc(2);})); 
 
-// ==== GUARDAR Y EXPORTAR ====
+// ==== GUARDAR/EXPORTAR ====
 function loadEntries(){ return JSON.parse(localStorage.getItem('madbot')||"[]"); }
 function saveEntries(d){ localStorage.setItem('madbot',JSON.stringify(d)); }
 
@@ -347,7 +306,7 @@ document.getElementById("save").onclick=()=>{
 document.getElementById("export").onclick=()=>{
   let data=loadEntries(); if(!data.length){alert("No hay datos");return;}
   let csv="FechaHora,Equipo,Categoría,Ronda,Total\n"+
-  data.map(e=>[e.time,e.team,e.cat,e.round,e.total].join(",")).join("\n");
+    data.map(e=>[e.time,e.team,e.cat,e.round,e.total].join(",")).join("\n");
   let blob=new Blob([csv],{type:"text/csv"}); let a=document.createElement("a");
   a.href=URL.createObjectURL(blob); a.download="madbot.csv"; a.click();
 };
@@ -358,4 +317,3 @@ refreshTable(); calc(1); calc(2);
 </script>
 </body>
 </html>
-
