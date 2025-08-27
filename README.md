@@ -1,15 +1,19 @@
-![Logo](https://github.com/lobotic/MAD-BOT/blob/main/MADBOTLogoMINI.png)
 # 🤖 MAD-BOT
 Competición de robótica escolar
 
+![Logo](https://github.com/lobotic/MAD-BOT/blob/main/MADBOTLogoMINI.png)
+
+[Descargar logo en tamaño grande](https://raw.githubusercontent.com/lobotic/MAD-BOT/refs/heads/main/MADBOTLogo.png)
 ---
 
 # 📝 REGLAMENTO
 
+TO DO
 ---
 
 # 🏟️ CAMPO DE JUEGO
 
+TO DO
 ---
 
 # 🏆 Marcador MAD-BOT
