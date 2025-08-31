@@ -24,7 +24,7 @@ Creo que es de vital importancia para facilitar el acceso a cuanta más gente me
 ## 🥫 ELEMENTOS MÓVILES
 Una de las pruebas consiste en desplazar latas de refresco simulando ser diferentes tipos de residuos por el campo hasta sus puntos de reciclaje. Se proponen estas "camisas" para un mejor efecto visual. [Descargables para imprimir en A3](https://github.com/lobotic/MAD-BOT/blob/main/CubiertasLatas.pdf)
 
-![Imagen de las "camisas" para las latas](https://github.com/lobotic/MAD-BOT/blob/main/CubiertasLatas.png)
+![Imagen de las "camisas" para las latas](https://github.com/lobotic/MAD-BOT/blob/main/CubiertaLatas.png)
 
 ## 🏆 Marcador MAD-BOT
 
