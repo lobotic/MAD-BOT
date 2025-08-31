@@ -42,6 +42,7 @@ Permite llevar la cuenta de **dos equipos a la vez**, con temporizadores, prepar
 6. Pulsa **Guardar Resultados** para registrar la partida (se colocan por orden de puntuación, de mayor a menor) y **Exportar CSV** para descargar los datos.  
 7. Puedes borrar filas individuales de la tabla de resultados.
 8. Para ver la clasificación acumulada de varias rondas, pulsa **Puntuación Final**; se generará una tabla con el total acumulado de cada equipo y su puesto.
+9. Puedes añadir al total puntos extra (en este caso la puntuación del robot, el vídeo y el póster).
 
 ![Captura de pantalla](https://github.com/lobotic/MAD-BOT/blob/main/captura.png)
 
