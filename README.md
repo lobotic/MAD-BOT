@@ -5,7 +5,7 @@ Competición de robótica escolar inspirada en [Eurobot](https://www.eurobot.es/
 
 [Descargar logo en tamaño grande](https://raw.githubusercontent.com/lobotic/MAD-BOT/refs/heads/main/MADBOTLogo.png)
 
----
+----
 
 ## 📝 REGLAMENTO
 
@@ -25,6 +25,12 @@ Creo que es de vital importancia para facilitar el acceso a cuanta más gente me
 Una de las pruebas consiste en desplazar latas de refresco simulando ser diferentes tipos de residuos por el campo hasta sus puntos de reciclaje. Se proponen estas "camisas" para un mejor efecto visual. [Descargables para imprimir en A3](https://github.com/lobotic/MAD-BOT/blob/main/CubiertasLatas.pdf)
 
 ![Imagen de las "camisas" para las latas](https://github.com/lobotic/MAD-BOT/blob/main/CubiertaLatas.png)
+
+## HACER UN ROBOT
+- Vale, me has convencido, pero no sé ni por donde empezar...
+- Mira estas guías de inicio para ver cómo empezar tu robot.
+* [Kit de inicio con el Kit Creativa](https://github.com/lobotic/MAD-BOT/blob/main/KitCreativa/Kit%20de%20inicio%20MAD-BOT%20(Kit%20Creativa).pdf)
+
 
 ## 🏆 Marcador MAD-BOT
 
