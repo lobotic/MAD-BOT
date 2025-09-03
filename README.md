@@ -29,7 +29,7 @@ Una de las pruebas consiste en desplazar latas de refresco simulando ser diferen
 
 ![Imagen de las "camisas" para las latas](https://github.com/lobotic/MAD-BOT/blob/main/CubiertaLatas.png)
 
-## HACER UN ROBOT
+## 🛠️​ HACER UN ROBOT
 - Vale, me has convencido, pero no sé ni por donde empezar...
 - Mira estas guías de inicio para ver cómo empezar tu robot.
   * [Kit de inicio con el Kit Creativa](https://github.com/lobotic/MAD-BOT/blob/main/KitsInicio/Kit%20de%20inicio%20MAD-BOT%20(Kit%20Creativa).pdf)
