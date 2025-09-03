@@ -31,6 +31,7 @@ Una de las pruebas consiste en desplazar latas de refresco simulando ser diferen
 - Mira estas guías de inicio para ver cómo empezar tu robot.
   * [Kit de inicio con el Kit Creativa](https://github.com/lobotic/MAD-BOT/blob/main/KitsInicio/Kit%20de%20inicio%20MAD-BOT%20(Kit%20Creativa).pdf)
   * [Kit de inicio con Nezha](https://github.com/lobotic/MAD-BOT/blob/main/KitsInicio/Kit%20de%20inicio%20MAD-BOT%20(Nezha).pdf)
+  * [Kit de inicio con el kit para Micro:bit de Secundaria (Versión con servomotores)](https://github.com/lobotic/MAD-BOT/blob/main/KitsInicio/Kit%20de%20inicio%20MAD-BOT%20(Kit%20Secundaria%20con%20servos).pdf)
 
 
 ## 🏆 Marcador MAD-BOT
