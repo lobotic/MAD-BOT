@@ -1,5 +1,6 @@
 # 🤖 MAD-BOT
-Competición de robótica escolar inspirada en [Eurobot](https://www.eurobot.es/)
+Competición de robótica escolar inspirada en [Eurobot](https://www.eurobot.es/).
+
 Lo malo de las competiciones de robótica es que normalmente  hay que desplazarse para jugar muy poquito rato. 
 ¿Y si tenemos todos los recursos, y son sencillos y accesibles para hacer nuestra competición en el centro o incluso en una clase?
 
