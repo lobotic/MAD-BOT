@@ -7,6 +7,7 @@ Lo malo de las competiciones de robótica es que normalmente  hay que desplazars
 ![Logo](https://github.com/lobotic/MAD-BOT/blob/main/MADBOTLogoMINI.png)
 
 [Descargar logo en tamaño grande](https://raw.githubusercontent.com/lobotic/MAD-BOT/refs/heads/main/MADBOTLogo.png)
+
 [Presentación MADBOT](https://github.com/lobotic/MAD-BOT/blob/main/presentacionMADBOT.pdf)
 
 ----
