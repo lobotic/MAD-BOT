@@ -7,6 +7,7 @@ Lo malo de las competiciones de robótica es que normalmente  hay que desplazars
 ![Logo](https://github.com/lobotic/MAD-BOT/blob/main/MADBOTLogoMINI.png)
 
 [Descargar logo en tamaño grande](https://raw.githubusercontent.com/lobotic/MAD-BOT/refs/heads/main/MADBOTLogo.png)
+[Presentación MADBOT](https://github.com/lobotic/MAD-BOT/blob/main/presentacionMADBOT.pdf)
 
 ----
 
@@ -40,6 +41,12 @@ Una de las pruebas consiste en desplazar latas de refresco simulando ser diferen
   ### SECUNDARIA
   * [Kit de inicio con el kit para Micro:bit de Secundaria (Versión con servomotores)](https://github.com/lobotic/MAD-BOT/blob/main/KitsInicio/Kit%20de%20inicio%20MAD-BOT%20(Kit%20Secundaria%20con%20servos).pdf)
   * [Kit de inicio con el kit para Micro:bit de Secundaria (Versión con motores DC)](https://github.com/lobotic/MAD-BOT/blob/main/KitsInicio/Kit%20de%20inicio%20MAD-BOT%20(Kit%20Secundaria%20con%20motores%20DC).pdf)
+ 
+    ### PROGRAMACIÓN MICROBIT
+  * [Kit creativa](https://github.com/lobotic/MAD-BOT/blob/main/KitsInicio/microbit-MAD-BOT-Kcreativa.hex)
+  * [Nezha](https://github.com/lobotic/MAD-BOT/blob/main/KitsInicio/microbit-MAD-BOT-Nezha.hex)
+  * [Kit Microbit Secundaria (Motores DC)](https://github.com/lobotic/MAD-BOT/blob/main/KitsInicio/microbit-MAD-BOT-SecundariaDC.hex)
+  * [Kit Microbit Secundaria (Servos)]()
 
 
 ## 🏆 Marcador MAD-BOT
