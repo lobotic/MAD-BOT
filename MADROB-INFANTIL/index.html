@@ -7,6 +7,7 @@
   :root {
     --bg: #f1a140;
     --fg: #470f18;
+    --table-bg: #e0e0e0;
     --card-bg: #fff6e3;
     --accent: #e44942;
   }
@@ -61,8 +62,12 @@
   .checkbox-label {
     display: flex;
     align-items: center;
-    gap: 8px;
     margin: 6px 0;
+    gap: 6px;
+  }
+  .checkbox-label input[type="checkbox"] {
+    transform: scale(1.2);
+    accent-color: var(--accent);
   }
   .team-sections {
     display: flex;
@@ -96,7 +101,7 @@
     border-collapse: collapse;
     width: 95%;
     max-width: 1100px;
-    background: var(--card-bg);
+    background: var(--table-bg);
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
   }
   th, td {
@@ -158,8 +163,8 @@
       </div>
     </div>
     <h3>Otros</h3>
-    <label class="checkbox-label"><input type="checkbox" id="finish1"> Acabar en zona FIN (10 pts)</label>
-    <label class="checkbox-label"><input type="checkbox" id="allDrive1"> Todos conducen (15 pts)</label>
+    <label class="checkbox-label"><input type="checkbox" id="finish1">Acabar en zona FIN (10 pts)</label>
+    <label class="checkbox-label"><input type="checkbox" id="allDrive1">Todos conducen (15 pts)</label>
     <h3>Total: <span id="total1">0</span> pts</h3>
     <div style="text-align:right;margin-top:8px;"><button onclick="resetTeam(1)" class="secondary">Reset Equipo 1</button></div>
   </div>
@@ -187,8 +192,8 @@
       </div>
     </div>
     <h3>Otros</h3>
-    <label class="checkbox-label"><input type="checkbox" id="finish2"> Acabar en zona FIN (10 pts)</label>
-    <label class="checkbox-label"><input type="checkbox" id="allDrive2"> Todos conducen (15 pts)</label>
+    <label class="checkbox-label"><input type="checkbox" id="finish2">Acabar en zona FIN (10 pts)</label>
+    <label class="checkbox-label"><input type="checkbox" id="allDrive2">Todos conducen (15 pts)</label>
     <h3>Total: <span id="total2">0</span> pts</h3>
     <div style="text-align:right;margin-top:8px;"><button onclick="resetTeam(2)" class="secondary">Reset Equipo 2</button></div>
   </div>
@@ -232,30 +237,22 @@ function b(id){return +document.getElementById(id).value||0;}function q(id){retu
 
 document.querySelectorAll('.team input, .team select').forEach(el=>el.addEventListener('change',()=>{calc(1);calc(2);}))
 
-/* --- Almacenamiento --- */
+/* --- Almacenamiento y tablas --- */
 function loadEntries(){return JSON.parse(localStorage.getItem('madbot')||"[]");}
 function saveEntries(d){localStorage.setItem('madbot',JSON.stringify(d));}
 function loadExtras(){return JSON.parse(localStorage.getItem('madbot_extras')||"{}");}
 function saveExtras(o){localStorage.setItem('madbot_extras',JSON.stringify(o));}
 
-/* --- Tabla Rondas --- */
 function refreshTable(){const tb=document.querySelector("#table tbody");tb.innerHTML="";const d=loadEntries().slice().sort((a,b)=>b.total-a.total);d.forEach((e,i)=>{const tr=document.createElement("tr");tr.innerHTML=`<td>${i+1}</td><td>${e.team}</td><td>${e.total}</td><td><button onclick="deleteRow(${i})" class="secondary">Borrar</button></td>`;tb.appendChild(tr);});}
 function deleteRow(i){let d=loadEntries(),s=d.slice().sort((a,b)=>b.total-a.total);const del=s[i],orig=d.findIndex(x=>x.team===del.team&&x.total===del.total);if(orig>-1)d.splice(orig,1);saveEntries(d);refreshTable();renderFinalTable();}
-
-/* --- Guardar entrada --- */
 q("save").onclick=()=>{const now=Date.now();let d=loadEntries();[1,2].forEach(t=>{const name=q("team"+t+"_name").value.trim();if(!name)return;d.push({team:name,total:calc(t),created:now});});saveEntries(d);refreshTable();renderFinalTable();};
-
-/* --- Export CSV --- */
 q("export").onclick=()=>{let d=loadEntries();if(!d.length){alert("No hay datos");return;}d=d.slice().sort((a,b)=>b.total-a.total);const csv="Puesto,Equipo,Puntos,Fecha\n"+d.map((e,i)=>[i+1,e.team,e.total,new Date(e.created).toLocaleString()].join(",")).join("\n");const blob=new Blob([csv],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="madbot_entries.csv";a.click();};
-
-/* --- Reset total --- */
 q("reset").onclick=()=>{if(!confirm("¿Borrar todos los datos?"))return;localStorage.removeItem('madbot');localStorage.removeItem('madbot_extras');refreshTable();renderFinalTable();resetTeam(1);resetTeam(2);resetMain();};
 
-/* --- Tabla Final --- */
 function renderFinalTable(){const tb=document.querySelector("#finalTable tbody");tb.innerHTML="";const data=loadEntries(),final={};data.forEach(e=>{if(!final[e.team])final[e.team]={team:e.team,total:0,rounds:0};final[e.team].total+=e.total;final[e.team].rounds++;});const extras=loadExtras();Object.keys(final).forEach(t=>final[t].extra=+extras[t]||0);let arr=Object.values(final).sort((a,b)=>(b.total+b.extra)-(a.total+a.extra));arr.forEach((e,i)=>{const podium=i==0?'🥇':i==1?'🥈':i==2?'🥉':'';const tr=document.createElement("tr");tr.innerHTML=`<td>${i+1}</td><td class="podium">${podium}</td><td>${e.team}</td><td>${e.rounds}</td><td>${e.total}</td><td><input class="small" type="number" value="${e.extra}" data-team="${e.team}"></td><td>${e.total+e.extra}</td>`;tb.appendChild(tr);});tb.querySelectorAll('input[data-team]').forEach(inp=>inp.addEventListener('change',()=>{const team=inp.dataset.team;const val=+inp.value||0;const ex=loadExtras();ex[team]=val;saveExtras(ex);renderFinalTable();}));}
 
-/* --- Inicialización --- */
 refreshTable();renderFinalTable();calc(1);calc(2);
 </script>
 </body>
 </html>
+
