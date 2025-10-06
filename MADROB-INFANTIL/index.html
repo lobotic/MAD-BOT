@@ -4,28 +4,121 @@
 <meta charset="utf-8" />
 <title>MAD-BOT Scoreboard</title>
 <style>
-  body { font-family: Arial, sans-serif; background-color: #470f18; color: #f1a140; margin:0; padding:20px;}
-  header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-  header img { width:180px; }
-  .timers { font-size:1.1rem; text-align:center; }
-  .columns { display:flex; gap:20px; flex-wrap:wrap; justify-content:space-around; }
-  .team { border:2px solid #b6c0c0; padding:14px; border-radius:10px; width:420px; background:#5a1a24; box-sizing:border-box; }
-  .team h2 { color:#f0dcc0; text-align:center; margin:4px 0 10px; }
-  .team input, .team select { margin:6px 0; padding:6px; width:100%; box-sizing:border-box; border-radius:6px; border:1px solid #caa; background:#fff; color:#000; }
-  label { color:#f0dcc0; display:block; margin:6px 0; }
-  .team-sections { display:flex; gap:12px; }
-  .team-section { flex:1; }
-  button { margin:6px 4px 0 0; padding:8px 12px; border:none; border-radius:8px; background:#e44942; color:#fff; font-weight:700; cursor:pointer; }
-  button.secondary { background:#b6c0c0; color:#000; }
-  button:hover { opacity:0.95; }
-  .buttons-container { display:flex; gap:12px; justify-content:center; margin:18px 0; flex-wrap:wrap; }
-  table { margin:10px auto 30px; border-collapse:collapse; width:95%; max-width:1100px; background:#5a1a24; box-shadow:0 6px 20px rgba(0,0,0,0.4); }
-  th, td { border:1px solid #f0dcc0; padding:8px 10px; text-align:center; color:#f0dcc0; }
-  th { background:#762b34; }
-  #scoreboard-title { text-align:center; color:#f0dcc0; margin-top:26px; font-size:1.3rem; }
-  .podium { font-size:1.25rem; }
-  input.small { width:70px; padding:6px; }
-  @media (max-width:900px){ .columns{flex-direction:column; align-items:center;} .team{width:92%;} table{width:98%;} }
+  :root {
+    --bg: #f1a140;
+    --fg: #470f18;
+    --card-bg: #fff6e3;
+    --accent: #e44942;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--fg);
+    margin: 0;
+    padding: 20px;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  header img { width: 180px; }
+  .timers { font-size: 1.1rem; text-align: center; }
+  .columns {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  .team {
+    border: 2px solid var(--fg);
+    padding: 14px;
+    border-radius: 10px;
+    width: 420px;
+    background: var(--card-bg);
+    box-sizing: border-box;
+  }
+  .team h2 {
+    color: var(--fg);
+    text-align: center;
+    margin: 4px 0 10px;
+  }
+  .team input, .team select {
+    margin: 6px 0;
+    padding: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1px solid var(--fg);
+    background: #fff;
+    color: var(--fg);
+  }
+  label {
+    display: block;
+    margin: 6px 0;
+  }
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+  }
+  .team-sections {
+    display: flex;
+    gap: 12px;
+  }
+  .team-section { flex: 1; }
+  button {
+    margin: 6px 4px 0 0;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  button.secondary {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  button:hover { opacity: 0.95; }
+  .buttons-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 18px 0;
+    flex-wrap: wrap;
+  }
+  table {
+    margin: 10px auto 30px;
+    border-collapse: collapse;
+    width: 95%;
+    max-width: 1100px;
+    background: var(--card-bg);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+  th, td {
+    border: 1px solid var(--fg);
+    padding: 8px 10px;
+    text-align: center;
+    color: var(--fg);
+  }
+  th { background: var(--bg); }
+  #scoreboard-title {
+    text-align: center;
+    color: var(--fg);
+    margin-top: 26px;
+    font-size: 1.3rem;
+  }
+  .podium { font-size: 1.25rem; }
+  input.small { width: 70px; padding: 6px; }
+  @media (max-width:900px){
+    .columns{flex-direction:column; align-items:center;}
+    .team{width:92%;}
+    table{width:98%;}
+  }
 </style>
 </head>
 <body>
@@ -48,14 +141,14 @@
     <label>Nombre: <input id="team1_name" placeholder="Nombre del equipo 1"></label>
     <div class="team-sections">
       <div class="team-section">
-        <h3 style="color:#f0dcc0;margin:6px 0;">Reciclaje</h3>
+        <h3>Reciclaje</h3>
         <label>Azul: <input type="number" id="blue1" min="0" max="3" value="0"></label>
         <label>Amarillo: <input type="number" id="yellow1" min="0" max="3" value="0"></label>
         <label>Verde: <input type="number" id="green1" min="0" max="3" value="0"></label>
         <label>Mal reciclados: <input type="number" id="misSorted1" min="0" value="0"></label>
       </div>
       <div class="team-section">
-        <h3 style="color:#f0dcc0;margin:6px 0;">Reforestación</h3>
+        <h3>Reforestación</h3>
         <label>Árbol en el parque:
           <select id="trees1">
             <option value="0">No</option>
@@ -64,10 +157,10 @@
         </label>
       </div>
     </div>
-    <h3 style="color:#f0dcc0;margin-top:10px;">Otros</h3>
-    <label><input type="checkbox" id="finish1"> Acabar en zona FIN (10 pts)</label>
-    <label><input type="checkbox" id="allDrive1"> Todos conducen (15 pts)</label>
-    <h3 style="color:#f0dcc0;margin-top:10px;">Total: <span id="total1">0</span> pts</h3>
+    <h3>Otros</h3>
+    <label class="checkbox-label"><input type="checkbox" id="finish1"> Acabar en zona FIN (10 pts)</label>
+    <label class="checkbox-label"><input type="checkbox" id="allDrive1"> Todos conducen (15 pts)</label>
+    <h3>Total: <span id="total1">0</span> pts</h3>
     <div style="text-align:right;margin-top:8px;"><button onclick="resetTeam(1)" class="secondary">Reset Equipo 1</button></div>
   </div>
 
@@ -77,14 +170,14 @@
     <label>Nombre: <input id="team2_name" placeholder="Nombre del equipo 2"></label>
     <div class="team-sections">
       <div class="team-section">
-        <h3 style="color:#f0dcc0;margin:6px 0;">Reciclaje</h3>
+        <h3>Reciclaje</h3>
         <label>Azul: <input type="number" id="blue2" min="0" max="3" value="0"></label>
         <label>Amarillo: <input type="number" id="yellow2" min="0" max="3" value="0"></label>
         <label>Verde: <input type="number" id="green2" min="0" max="3" value="0"></label>
         <label>Mal reciclados: <input type="number" id="misSorted2" min="0" value="0"></label>
       </div>
       <div class="team-section">
-        <h3 style="color:#f0dcc0;margin:6px 0;">Reforestación</h3>
+        <h3>Reforestación</h3>
         <label>Árbol en el parque:
           <select id="trees2">
             <option value="0">No</option>
@@ -93,10 +186,10 @@
         </label>
       </div>
     </div>
-    <h3 style="color:#f0dcc0;margin-top:10px;">Otros</h3>
-    <label><input type="checkbox" id="finish2"> Acabar en zona FIN (10 pts)</label>
-    <label><input type="checkbox" id="allDrive2"> Todos conducen (15 pts)</label>
-    <h3 style="color:#f0dcc0;margin-top:10px;">Total: <span id="total2">0</span> pts</h3>
+    <h3>Otros</h3>
+    <label class="checkbox-label"><input type="checkbox" id="finish2"> Acabar en zona FIN (10 pts)</label>
+    <label class="checkbox-label"><input type="checkbox" id="allDrive2"> Todos conducen (15 pts)</label>
+    <h3>Total: <span id="total2">0</span> pts</h3>
     <div style="text-align:right;margin-top:8px;"><button onclick="resetTeam(2)" class="secondary">Reset Equipo 2</button></div>
   </div>
 </div>
@@ -105,218 +198,64 @@
   <button id="save">Guardar Resultados</button>
   <button id="export">Exportar CSV</button>
   <button id="reset">Reiniciar Tabla</button>
-  <button id="finalScoresBtn">Puntuación Final</button>
 </div>
 
-<h2 id="scoreboard-title">🏆 Clasificación de Rondas (entradas) 🏆</h2>
+<h2 id="scoreboard-title">🏆 Clasificación de Rondas 🏆</h2>
 <table id="table">
   <thead>
-    <tr>
-      <th>Puesto</th><th>Equipo</th><th>Puntos</th><th>Acciones</th>
-    </tr>
+    <tr><th>Puesto</th><th>Equipo</th><th>Puntos</th><th>Acciones</th></tr>
   </thead>
   <tbody></tbody>
 </table>
 
-<h2 id="scoreboard-title">🏁 Puntuación Final (agregada) 🏁</h2>
+<h2 id="scoreboard-title">🏁 Puntuación Final (Agregada) 🏁</h2>
 <table id="finalTable">
   <thead>
-    <tr>
-      <th>Puesto</th><th>Podio</th><th>Equipo</th><th>Rondas</th><th>Total</th><th>Extra</th><th>Total + Extra</th>
-    </tr>
+    <tr><th>Puesto</th><th>Podio</th><th>Equipo</th><th>Rondas</th><th>Total</th><th>Extra</th><th>Total + Extra</th></tr>
   </thead>
   <tbody></tbody>
 </table>
 
 <script>
-/* ----------------- Temporizador ----------------- */
+/* --- Temporizador --- */
 let mainTimer = 120, intervalMain = null;
 function beep(){ try{ new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg").play(); }catch(e){} }
-function startMain(){
-  if(intervalMain) return;
-  intervalMain = setInterval(()=>{
-    mainTimer--;
-    document.getElementById("mainTimer").textContent = mainTimer;
-    if(mainTimer <= 0){ clearInterval(intervalMain); intervalMain = null; beep(); }
-  },1000);
-}
+function startMain(){ if(intervalMain) return; intervalMain=setInterval(()=>{ mainTimer--; document.getElementById("mainTimer").textContent=mainTimer; if(mainTimer<=0){clearInterval(intervalMain);intervalMain=null;beep();}},1000);}
 function resetMain(){ clearInterval(intervalMain); intervalMain=null; mainTimer=120; document.getElementById("mainTimer").textContent=mainTimer; }
 
-/* ----------------- Reset equipo ----------------- */
-function resetTeam(team){
-  document.getElementById("team"+team+"_name").value = "";
-  ["blue","yellow","green","misSorted"].forEach(id => document.getElementById(id+team).value = 0);
-  document.getElementById("trees"+team).selectedIndex = 0;
-  ["finish","allDrive"].forEach(id => document.getElementById(id+team).checked = false);
-  document.getElementById("total"+team).textContent = 0;
-}
+/* --- Reset equipo --- */
+function resetTeam(t){["blue","yellow","green","misSorted"].forEach(id=>document.getElementById(id+t).value=0);["finish","allDrive"].forEach(id=>document.getElementById(id+t).checked=false);document.getElementById("trees"+t).selectedIndex=0;document.getElementById("team"+t+"_name").value="";document.getElementById("total"+t).textContent=0;}
 
-/* ----------------- Cálculo de puntuación ----------------- */
-function calc(team){
-  let blue = +document.getElementById("blue"+team).value || 0;
-  let yellow = +document.getElementById("yellow"+team).value || 0;
-  let green = +document.getElementById("green"+team).value || 0;
-  let mis = +document.getElementById("misSorted"+team).value || 0;
-  let rec = 0;
-  [blue, yellow, green].forEach(c => {
-    if(c === 1) rec += 2;
-    else if(c === 2) rec += 5;
-    else if(c === 3) rec += 15;
-  });
-  rec -= mis * 5;
-  if(blue > 0 && yellow > 0 && green > 0) rec += 10; // bonus por clasificar los 3 tipos
-  let ref = +document.getElementById("trees"+team).value || 0;
-  let oth = 0;
-  if(document.getElementById("finish"+team).checked) oth += 10;
-  if(document.getElementById("allDrive"+team).checked) oth += 15;
-  let total = rec + ref + oth;
-  document.getElementById("total"+team).textContent = total;
-  return total;
-}
+/* --- Calcular puntos --- */
+function calc(t){let blue=+b("blue"+t),yellow=+b("yellow"+t),green=+b("green"+t),mis=+b("misSorted"+t);let rec=0;[blue,yellow,green].forEach(c=>{if(c===1)rec+=2;else if(c===2)rec+=5;else if(c===3)rec+=15;});rec-=mis*5;if(blue>0&&yellow>0&&green>0)rec+=10;let ref=+b("trees"+t),oth=0;if(q("finish"+t).checked)oth+=10;if(q("allDrive"+t).checked)oth+=15;let total=rec+ref+oth;q("total"+t).textContent=total;return total;}
+function b(id){return +document.getElementById(id).value||0;}function q(id){return document.getElementById(id);}
 
-/* actualizar cuando cambia cualquier control de los equipos */
-document.querySelectorAll('.team input, .team select').forEach(el => el.addEventListener('change', ()=>{ calc(1); calc(2); }));
+document.querySelectorAll('.team input, .team select').forEach(el=>el.addEventListener('change',()=>{calc(1);calc(2);}))
 
-/* ----------------- Almacenamiento y tablas ----------------- */
-function loadEntries(){ return JSON.parse(localStorage.getItem('madbot') || "[]"); }
-function saveEntries(data){ localStorage.setItem('madbot', JSON.stringify(data)); }
-function loadExtras(){ return JSON.parse(localStorage.getItem('madbot_extras') || "{}"); }
-function saveExtras(obj){ localStorage.setItem('madbot_extras', JSON.stringify(obj)); }
+/* --- Almacenamiento --- */
+function loadEntries(){return JSON.parse(localStorage.getItem('madbot')||"[]");}
+function saveEntries(d){localStorage.setItem('madbot',JSON.stringify(d));}
+function loadExtras(){return JSON.parse(localStorage.getItem('madbot_extras')||"{}");}
+function saveExtras(o){localStorage.setItem('madbot_extras',JSON.stringify(o));}
 
-/* Tabla de entradas (rondas) */
-function refreshTable(){
-  const tb = document.querySelector("#table tbody");
-  tb.innerHTML = "";
-  const data = loadEntries().slice().sort((a,b)=> b.total - a.total);
-  data.forEach((e, i) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${i+1}</td>
-      <td>${escapeHtml(e.team)}</td>
-      <td>${e.total}</td>
-      <td><button onclick="deleteRow(${i})" class="secondary">Borrar</button></td>
-    `;
-    tb.appendChild(tr);
-  });
-}
+/* --- Tabla Rondas --- */
+function refreshTable(){const tb=document.querySelector("#table tbody");tb.innerHTML="";const d=loadEntries().slice().sort((a,b)=>b.total-a.total);d.forEach((e,i)=>{const tr=document.createElement("tr");tr.innerHTML=`<td>${i+1}</td><td>${e.team}</td><td>${e.total}</td><td><button onclick="deleteRow(${i})" class="secondary">Borrar</button></td>`;tb.appendChild(tr);});}
+function deleteRow(i){let d=loadEntries(),s=d.slice().sort((a,b)=>b.total-a.total);const del=s[i],orig=d.findIndex(x=>x.team===del.team&&x.total===del.total);if(orig>-1)d.splice(orig,1);saveEntries(d);refreshTable();renderFinalTable();}
 
-/* borrar fila de entradas por índice en la lista ordenada.
-   Nota: mantenemos la lógica simple: el botón borra la entrada en el índice actual
-   de la lista ordenada que se está mostrando (igual que el original). */
-function deleteRow(index){
-  let data = loadEntries();
-  // Para mantener la misma experiencia que antes (orden por total en la vista),
-  // eliminamos el elemento del array original que corresponde al índice
-  // en la vista ordenada: hay que obtener la ordenación y mapear.
-  const sorted = data.slice().sort((a,b)=> b.total - a.total);
-  const itemToDelete = sorted[index];
-  // encontrar el primer índice que coincida con el objeto (por equipo+total)
-  const originalIndex = data.findIndex(d => d.team === itemToDelete.team && d.total === itemToDelete.total);
-  if(originalIndex > -1) { data.splice(originalIndex, 1); saveEntries(data); }
-  refreshTable();
-  renderFinalTable();
-}
+/* --- Guardar entrada --- */
+q("save").onclick=()=>{const now=Date.now();let d=loadEntries();[1,2].forEach(t=>{const name=q("team"+t+"_name").value.trim();if(!name)return;d.push({team:name,total:calc(t),created:now});});saveEntries(d);refreshTable();renderFinalTable();};
 
-/* ----------------- Guardar entradas ----------------- */
-document.getElementById("save").onclick = () => {
-  const now = Date.now();
-  let data = loadEntries();
-  [1,2].forEach(t => {
-    const teamName = document.getElementById("team"+t+"_name").value.trim();
-    if(teamName === "") return;
-    const entry = { team: teamName, total: calc(t), created: now };
-    data.push(entry);
-  });
-  saveEntries(data);
-  refreshTable();
-  renderFinalTable(); // actualizar tabla final al guardar
-};
+/* --- Export CSV --- */
+q("export").onclick=()=>{let d=loadEntries();if(!d.length){alert("No hay datos");return;}d=d.slice().sort((a,b)=>b.total-a.total);const csv="Puesto,Equipo,Puntos,Fecha\n"+d.map((e,i)=>[i+1,e.team,e.total,new Date(e.created).toLocaleString()].join(",")).join("\n");const blob=new Blob([csv],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="madbot_entries.csv";a.click();};
 
-/* ----------------- Export CSV ----------------- */
-document.getElementById("export").onclick = () => {
-  let data = loadEntries();
-  if(!data.length){ alert("No hay datos"); return; }
-  // exportamos en el orden actual (ordenados por total descendente)
-  data = data.slice().sort((a,b)=> b.total - a.total);
-  const csv = "Puesto,Equipo,Puntos,Fecha\n" + data.map((e,i)=>{
-    const date = new Date(e.created || Date.now()).toLocaleString();
-    return [i+1, `"${e.team.replace(/"/g,'""')}"`, e.total, `"${date}"`].join(",");
-  }).join("\n");
-  const blob = new Blob([csv], { type: "text/csv" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "madbot_entries.csv";
-  a.click();
-};
+/* --- Reset total --- */
+q("reset").onclick=()=>{if(!confirm("¿Borrar todos los datos?"))return;localStorage.removeItem('madbot');localStorage.removeItem('madbot_extras');refreshTable();renderFinalTable();resetTeam(1);resetTeam(2);resetMain();};
 
-/* ----------------- Reset completo ----------------- */
-document.getElementById("reset").onclick = () => {
-  if(!confirm("¿Borrar todas las entradas y extras guardadas?")) return;
-  localStorage.removeItem('madbot');
-  localStorage.removeItem('madbot_extras');
-  refreshTable();
-  renderFinalTable();
-  resetTeam(1); resetTeam(2); resetMain();
-};
+/* --- Tabla Final --- */
+function renderFinalTable(){const tb=document.querySelector("#finalTable tbody");tb.innerHTML="";const data=loadEntries(),final={};data.forEach(e=>{if(!final[e.team])final[e.team]={team:e.team,total:0,rounds:0};final[e.team].total+=e.total;final[e.team].rounds++;});const extras=loadExtras();Object.keys(final).forEach(t=>final[t].extra=+extras[t]||0);let arr=Object.values(final).sort((a,b)=>(b.total+b.extra)-(a.total+a.extra));arr.forEach((e,i)=>{const podium=i==0?'🥇':i==1?'🥈':i==2?'🥉':'';const tr=document.createElement("tr");tr.innerHTML=`<td>${i+1}</td><td class="podium">${podium}</td><td>${e.team}</td><td>${e.rounds}</td><td>${e.total}</td><td><input class="small" type="number" value="${e.extra}" data-team="${e.team}"></td><td>${e.total+e.extra}</td>`;tb.appendChild(tr);});tb.querySelectorAll('input[data-team]').forEach(inp=>inp.addEventListener('change',()=>{const team=inp.dataset.team;const val=+inp.value||0;const ex=loadExtras();ex[team]=val;saveExtras(ex);renderFinalTable();}));}
 
-/* ----------------- Tabla final (agregada por equipo) ----------------- */
-document.getElementById("finalScoresBtn").onclick = renderFinalTable;
-
-function renderFinalTable(){
-  const tb = document.querySelector("#finalTable tbody");
-  tb.innerHTML = "";
-  const data = loadEntries();
-  // agregar por equipo
-  const finalScores = {};
-  data.forEach(e => {
-    if(!finalScores[e.team]) finalScores[e.team] = { team: e.team, total: 0, rounds: 0 };
-    finalScores[e.team].total += Number(e.total) || 0;
-    finalScores[e.team].rounds += 1;
-  });
-  const extras = loadExtras();
-  Object.keys(finalScores).forEach(team => {
-    finalScores[team].extra = Number(extras[team] || 0);
-  });
-  let finalArray = Object.values(finalScores);
-  // ordenar por total + extra (desc)
-  finalArray.sort((a,b) => (b.total + b.extra) - (a.total + a.extra));
-  // render
-  finalArray.forEach((e, i) => {
-    const podium = (i===0? '🥇' : i===1 ? '🥈' : i===2 ? '🥉' : '');
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${i+1}</td>
-      <td class="podium">${podium}</td>
-      <td>${escapeHtml(e.team)}</td>
-      <td>${e.rounds}</td>
-      <td>${e.total}</td>
-      <td><input class="small" type="number" value="${e.extra}" data-team="${escapeAttr(e.team)}"></td>
-      <td class="sum">${e.total + e.extra}</td>
-    `;
-    tb.appendChild(tr);
-  });
-  // listeners para inputs de extra
-  tb.querySelectorAll('input[data-team]').forEach(inp => {
-    inp.addEventListener('change', ()=>{
-      const team = inp.dataset.team;
-      const val = Number(inp.value) || 0;
-      const ex = loadExtras();
-      ex[team] = val;
-      saveExtras(ex);
-      renderFinalTable(); // re-render para reordenar y actualizar sumas
-    });
-  });
-}
-
-/* ----------------- Helpers ----------------- */
-function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function escapeAttr(s){ return String(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-
-/* ----------------- Inicialización ----------------- */
-refreshTable();
-renderFinalTable();
-calc(1);
-calc(2);
+/* --- Inicialización --- */
+refreshTable();renderFinalTable();calc(1);calc(2);
 </script>
 </body>
 </html>
