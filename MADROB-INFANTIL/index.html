@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+body { font-family: Arial, sans-serif; background-color: #470f18; color: #f1a140; }
+header { display: flex; justify-content: space-between; align-items: center; text-align: center; margin: 10px; }
+header img { width: 206px; justify-self: center; }
+.timers { font-size: 1.5em; }
+.columns { display: flex; justify-content: space-around; margin: 20px; }
+.team { border: 2px solid #b6c0c0; padding: 15px; border-radius: 10px; width: 45%; background: #5a1a24; text-align: left; }
+.team h2 { color: #f0dcc0; text-align: center; }
+.team input, .team select { margin: 5px; padding: 5px; }
+button { margin: 5px; padding: 8px 16px; border: none; border-radius: 8px; background-color: #e44942; color: #fff; font-weight: bold; cursor: pointer; }
+button.secondary { background-color: #b6c0c0; color: #000; }
+table { margin: 20px auto; border-collapse: collapse; background: #5a1a24; width: 90%; }
+th, td { border: 1px solid #f0dcc0; padding: 8px; text-align: center; color: #f0dcc0; }
+.team-sections { display: flex; justify-content: space-between; }
+.team-section { width: 48%; }
+#table td button { margin:0 auto; display:block; }
+.buttons-container { display:flex; justify-content:center; gap:10px; margin:20px 0; }
+</style>
+</head>
+<body>
+<header>
+<img src="MADBOTLogo.png" alt="MAD-BOT Logo">
+<div class="timers">
+<p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
+<button onclick="startMain()">Iniciar</button>
+<button onclick="resetMain()">Reset</button>
+</div>
+</header>
+
+<div class="columns">
+<!-- EQUIPO 1 -->
+<div class="team">
+<h2>Equipo 1</h2>
+<label>Nombre: <input id="team1_name"></label><br>
+<label>Categoría: 
+  <select id="team1_cat">
+    <option>Primaria</option>
+    <option>Secundaria</option>
+  </select>
+</label>
+<label>Ronda: <input type="number" id="team1_round" value="1" min="1"></label>
+<div class="team-sections">
+<div class="team-section">
+<h3>Reciclaje</h3>
+Azul: <input type="number" id="blue1" min="0" max="3" value="0"><br>
+Amarillo: <input type="number" id="yellow1" min="0" max="3" value="0"><br>
+Mal reciclados: <input type="number" id="misSorted1" min="0" value="0"><br>
+</div>
+<div class="team-section">
+<h3>Reforestación</h3>
+Árbol colocado en el parque: 
+<select id="trees1">
+<option value="0">No</option>
+<option value="25">Sí (25 pts)</option>
+</select>
+</div>
+</div>
+<h3>Otros</h3>
+<label><input type="checkbox" id="finish1"> Acabar en zona FIN (10 pts)</label><br>
+<label><input type="checkbox" id="allDrive1"> Todos conducen (15 pts)</label><br>
+<h3>Total: <span id="total1">0</span> pts</h3>
+<div style="text-align:right; margin-top:10px;"><button onclick="resetTeam(1)">Reset Equipo 1</button></div>
+</div>
+
+<!-- EQUIPO 2 -->
+<div class="team">
+<h2>Equipo 2</h2>
+<label>Nombre: <input id="team2_name"></label><br>
+<label>Categoría: 
+  <select id="team2_cat">
+    <option>Primaria</option>
+    <option>Secundaria</option>
+  </select>
+</label>
+<label>Ronda: <input type="number" id="team2_round" value="1" min="1"></label>
+<div class="team-sections">
+<div class="team-section">
+<h3>Reciclaje</h3>
+Azul: <input type="number" id="blue2" min="0" max="3" value="0"><br>
+Amarillo: <input type="number" id="yellow2" min="0" max="3" value="0"><br>
+Mal reciclados: <input type="number" id="misSorted2" min="0" value="0"><br>
+</div>
+<div class="team-section">
+<h3>Reforestación</h3>
+Árbol colocado en el parque: 
+<select id="trees2">
+<option value="0">No</option>
+<option value="25">Sí (25 pts)</option>
+</select>
+</div>
+</div>
+<h3>Otros</h3>
+<label><input type="checkbox" id="finish2"> Acabar en zona FIN (10 pts)</label><br>
+<label><input type="checkbox" id="allDrive2"> Todos conducen (15 pts)</label><br>
+<h3>Total: <span id="total2">0</span> pts</h3>
+<div style="text-align:right; margin-top:10px;"><button onclick="resetTeam(2)">Reset Equipo 2</button></div>
+</div>
+</div>
+
+<div class="buttons-container">
+<button id="save">Guardar Resultados</button>
+<button id="export">Exportar CSV</button>
+<button id="reset">Reiniciar Tabla</button>
+<button id="finalScoresBtn">Puntuación Final</button>
+</div>
+
+<table id="table">
+<thead>
+<tr>
+<th>Puesto</th><th>Equipo</th><th>Categoría</th><th>Ronda</th><th>Total</th><th>Penalizadores</th><th>Acciones</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<table id="finalTable">
+<thead>
+<tr>
+<th>Puesto</th><th>Equipo</th><th>Categoría</th><th>Rondas</th><th>Total</th><th>Extra</th><th>Total + Extra</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<script>
+let mainTimer=120, intervalMain=null;
+
+function beep(){ new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg").play(); }
+
+function startMain(){
+  if(intervalMain) return;
+  intervalMain=setInterval(()=>{
+    mainTimer--;
+    document.getElementById("mainTimer").textContent=mainTimer;
+    if(mainTimer<=0){ clearInterval(intervalMain); intervalMain=null; beep(); }
+  },1000);
+}
+
+function resetMain(){
+  clearInterval(intervalMain); intervalMain=null; mainTimer=120; 
+  document.getElementById("mainTimer").textContent=mainTimer;
+}
+
+function resetTeam(team){
+  document.getElementById("team"+team+"_name").value="";
+  document.getElementById("team"+team+"_cat").selectedIndex=0;
+  document.getElementById("team"+team+"_round").value=1;
+  ["blue","yellow","misSorted"].forEach(id=>{ let el=document.getElementById(id+team); if(el) el.value=0; });
+  document.getElementById("trees"+team).selectedIndex=0;
+  ["finish","allDrive"].forEach(id=>{ let el=document.getElementById(id+team); if(el) el.checked=false; });
+  document.getElementById("total"+team).textContent=0;
+}
+
+function calc(team){
+  let blue=+document.getElementById("blue"+team).value;
+  let yellow=+document.getElementById("yellow"+team).value;
+  let mis=+document.getElementById("misSorted"+team).value;
+  let rec=0;
+  [blue,yellow].forEach(c=>{ if(c===1) rec+=2; else if(c===2) rec+=5; else if(c===3) rec+=15; });
+  rec -= mis*5;
+  if(blue>0 && yellow>0) rec+=10; // bonus por clasificar ambos tipos
+
+  let ref=+document.getElementById("trees"+team).value;
+  let oth=0;
+  let penalty=0;
+
+  if(document.getElementById("finish"+team).checked) oth+=10;
+  if(document.getElementById("allDrive"+team).checked) oth+=15;
+  penalty += mis*5;
+
+  document.getElementById("total"+team).textContent=rec+ref+oth;
+  document.getElementById("total"+team).dataset.penalty=penalty;
+  return rec+ref+oth;
+}
+
+document.querySelectorAll("input,select").forEach(el=>el.addEventListener("change", ()=>{calc(1);calc(2);})));
+
+function loadEntries(){ return JSON.parse(localStorage.getItem('madbot')||"[]"); }
+function saveEntries(d){ localStorage.setItem('madbot',JSON.stringify(d)); }
+
+function refreshTable(){
+  let tb=document.querySelector("#table tbody"); tb.innerHTML="";
+  let data = loadEntries(); data.sort((a,b)=>b.total-a.total);
+  data.forEach((e,i)=>{
+    let tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td>${i+1}</td>
+      <td>${e.team}</td>
+      <td>${e.cat}</td>
+      <td>${e.round}</td>
+      <td>${e.total}</td>
+      <td>${e.penalty || 0}</td>
+      <td><button onclick="deleteRow(${i})">Borrar</button></td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+
+function deleteRow(index){
+  let data=loadEntries(); data.splice(index,1); saveEntries(data); refreshTable();
+}
+
+document.getElementById("save").onclick=()=>{
+  [1,2].forEach(t=>{
+    let entry={ 
+      team:document.getElementById("team"+t+"_name").value,
+      cat:document.getElementById("team"+t+"_cat").value,
+      round:document.getElementById("team"+t+"_round").value,
+      total:calc(t),
+      penalty:+document.getElementById("total"+t).dataset.penalty || 0
+    };
+    let data=loadEntries(); data.push(entry); saveEntries(data);
+  });
+  refreshTable();
+};
+
+document.getElementById("export").onclick=()=>{
+  let data=loadEntries();
+  if(!data.length){alert("No hay datos");return;}
+  let csv="Puesto,Equipo,Categoría,Ronda,Total,Penalizadores\n"+
+          data.map((e,i)=>[i+1,e.team,e.cat,e.round,e.total,e.penalty].join(",")).join("\n");
+  let blob=new Blob([csv],{type:"text/csv"});
+  let a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="madbot.csv";
+  a.click();
+};
+
+document.getElementById("reset").onclick=()=>{
+  localStorage.removeItem("madbot");
+  localStorage.removeItem("madbot_extras");
+  refreshTable(); resetTeam(1); resetTeam(2); resetMain();
+};
+
+document.getElementById("finalScoresBtn").onclick=()=>{
+  let data=loadEntries();
+  let finalScores = {};
+  data.forEach(e=>{
+    if(!finalScores[e.team]) finalScores[e.team]={team:e.team, cat:e.cat, total:0, rounds:0, extra:0};
+    finalScores[e.team].total += e.total;
+    finalScores[e.team].rounds += 1;
+  });
+  let extras = JSON.parse(localStorage.getItem("madbot_extras") || "{}");
+  Object.keys(finalScores).forEach(team=>{
+    if(extras[team]) finalScores[team].extra = extras[team];
+  });
+  let finalArray = Object.values(finalScores).sort((a,b)=>(b.total+b.extra)-(a.total+a.extra));
+  let tb = document.querySelector("#finalTable tbody");
+  tb.innerHTML = "";
+  finalArray.forEach((e,i)=>{
+    let tr = document.createElement("tr");
+    tr.innerHTML=`
+      <td>${i+1}</td>
+      <td>${e.team}</td>
+      <td>${e.cat}</td>
+      <td>${e.rounds}</td>
+      <td>${e.total}</td>
+      <td><input type="number" value="${e.extra}" data-team="${e.team}" style="width:60px"></td>
+      <td>${e.total + e.extra}</td>
+    `;
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll("input[type=number]").forEach(inp=>{
+    inp.addEventListener("change",()=>{
+      let extras = JSON.parse(localStorage.getItem("madbot_extras") || "{}");
+      extras[inp.dataset.team] = +inp.value;
+      localStorage.setItem("madbot_extras", JSON.stringify(extras));
+      document.getElementById("finalScoresBtn").click();
+    });
+  });
+};
+
+refreshTable(); calc(1); calc(2);
+</script>
+</body>
+</html>
