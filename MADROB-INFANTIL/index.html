@@ -12,12 +12,15 @@ header img { width: 206px; }
 .team h2 { color: #f0dcc0; text-align: center; }
 .team input, .team select { margin: 5px; padding: 5px; }
 button { margin: 5px; padding: 8px 16px; border: none; border-radius: 8px; background-color: #e44942; color: #fff; font-weight: bold; cursor: pointer; }
-table { margin: 20px auto; border-collapse: collapse; background: #5a1a24; width: 90%; }
+button:hover { background-color: #d83a38; }
+table { margin: 20px auto; border-collapse: collapse; background: #5a1a24; width: 90%; box-shadow: 0 0 10px #0005; }
 th, td { border: 1px solid #f0dcc0; padding: 8px; text-align: center; color: #f0dcc0; }
+th { background-color: #762b34; }
 .team-sections { display: flex; justify-content: space-between; }
 .team-section { width: 48%; }
 #table td button { margin:0 auto; display:block; }
 .buttons-container { display:flex; justify-content:center; gap:10px; margin:20px 0; }
+#scoreboard-title { text-align:center; font-size:1.5em; color:#f0dcc0; margin-top:30px; }
 </style>
 </head>
 <body>
@@ -95,17 +98,18 @@ Mal reciclados: <input type="number" id="misSorted2" min="0" value="0"><br>
 <button id="reset">Reiniciar Tabla</button>
 </div>
 
+<h2 id="scoreboard-title">🏆 Clasificación Final 🏆</h2>
 <table id="table">
 <thead>
 <tr>
-<th>Puesto</th><th>Equipo</th><th>Total</th><th>Acciones</th>
+<th>Puesto</th><th>Equipo</th><th>Puntuación Total</th><th>Acciones</th>
 </tr>
 </thead>
 <tbody></tbody>
 </table>
 
 <script>
-// Temporizador
+// --- Temporizador ---
 let mainTimer = 120, intervalMain = null;
 function beep(){ new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg").play(); }
 function startMain(){
@@ -118,7 +122,7 @@ function startMain(){
 }
 function resetMain(){ clearInterval(intervalMain); intervalMain=null; mainTimer=120; document.getElementById("mainTimer").textContent=mainTimer; }
 
-// Reset equipo
+// --- Reset equipo ---
 function resetTeam(team){
   document.getElementById("team"+team+"_name").value="";
   ["blue","yellow","green","misSorted"].forEach(id=>document.getElementById(id+team).value=0);
@@ -127,7 +131,7 @@ function resetTeam(team){
   document.getElementById("total"+team).textContent=0;
 }
 
-// Cálculo de puntuación
+// --- Cálculo de puntuación ---
 function calc(team){
   let blue = +document.getElementById("blue"+team).value;
   let yellow = +document.getElementById("yellow"+team).value;
@@ -138,7 +142,7 @@ function calc(team){
     if(c===1) rec+=2; else if(c===2) rec+=5; else if(c===3) rec+=15;
   });
   rec -= mis*5;
-  if(blue>0 && yellow>0 && green>0) rec+=10; // bonus por clasificar los tres tipos
+  if(blue>0 && yellow>0 && green>0) rec+=10; // bonus por los tres tipos
   let ref = +document.getElementById("trees"+team).value;
   let oth = 0;
   if(document.getElementById("finish"+team).checked) oth+=10;
@@ -148,10 +152,10 @@ function calc(team){
   return total;
 }
 
-// Actualiza al cambiar cualquier input
+// --- Eventos de actualización ---
 document.querySelectorAll("input,select").forEach(el=>el.addEventListener("change",()=>{ calc(1); calc(2); }));
 
-// Guardar y cargar resultados
+// --- Tabla y almacenamiento ---
 function loadEntries(){ return JSON.parse(localStorage.getItem('madbot')||"[]"); }
 function saveEntries(data){ localStorage.setItem('madbot',JSON.stringify(data)); }
 
@@ -170,7 +174,7 @@ function deleteRow(index){
   let data = loadEntries(); data.splice(index,1); saveEntries(data); refreshTable();
 }
 
-// Botón Guardar
+// --- Botones ---
 document.getElementById("save").onclick=()=>{
   [1,2].forEach(t=>{
     let teamName = document.getElementById("team"+t+"_name").value;
@@ -181,11 +185,10 @@ document.getElementById("save").onclick=()=>{
   refreshTable();
 };
 
-// Exportar CSV
 document.getElementById("export").onclick=()=>{
   let data = loadEntries();
   if(!data.length){ alert("No hay datos"); return; }
-  let csv = "Puesto,Equipo,Total\n"+data.map((e,i)=>[i+1,e.team,e.total].join(",")).join("\n");
+  let csv = "Puesto,Equipo,Puntuación Total\n"+data.map((e,i)=>[i+1,e.team,e.total].join(",")).join("\n");
   let blob = new Blob([csv],{type:"text/csv"});
   let a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
@@ -193,15 +196,15 @@ document.getElementById("export").onclick=()=>{
   a.click();
 };
 
-// Reset tabla y equipos
 document.getElementById("reset").onclick=()=>{
   localStorage.removeItem("madbot");
   refreshTable();
   resetTeam(1); resetTeam(2); resetMain();
 };
 
-// Inicialización
+// --- Inicialización ---
 refreshTable(); calc(1); calc(2);
 </script>
 </body>
 </html>
+
