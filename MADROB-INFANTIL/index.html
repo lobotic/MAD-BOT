@@ -21,17 +21,24 @@
 
   /* --- CABECERA --- */
   header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: table;
+    width: 100%;
     margin-bottom: 20px;
   }
+  .header-cell {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+  .header-left { text-align: left; width: 33%; }
+  .header-center { text-align: center; width: 34%; }
+  .header-right { text-align: right; width: 33%; }
+
   header img {
     width: 200px;
   }
   .timers {
     font-size: 1.1rem;
-    text-align: right;
   }
   .timers button {
     margin: 5px;
@@ -81,22 +88,17 @@
     display: block;
     margin: 6px 0;
   }
-
-  /* ✅ CHECKBOXES alineados a la izquierda en una sola línea */
   .checkbox-label {
     display: flex;
     align-items: center;
+    margin: 6px 0;
+    gap: 6px;
     justify-content: flex-start;
-    gap: 8px;
-    margin: 4px 0;
-    text-align: left;
-    width: 100%;
   }
   .checkbox-label input[type="checkbox"] {
     transform: scale(1.2);
     accent-color: var(--accent);
   }
-
   .team-sections {
     display: flex;
     gap: 12px;
@@ -158,11 +160,16 @@
 <body>
 
 <header>
-  <img src="https://lobotic.github.io/MAD-BOT/MADBOTLogo.png" alt="MAD-BOT Logo">
-  <div class="timers">
-    <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
-    <button onclick="startMain()">Iniciar</button>
-    <button onclick="resetMain()">Reset</button>
+  <div class="header-cell header-left">
+    <img src="https://lobotic.github.io/MAD-BOT/MADBOTLogo.png" alt="MAD-BOT Logo">
+  </div>
+  <div class="header-cell header-center"></div>
+  <div class="header-cell header-right">
+    <div class="timers">
+      <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
+      <button onclick="startMain()">Iniciar</button>
+      <button onclick="resetMain()">Reset</button>
+    </div>
   </div>
 </header>
 
@@ -190,8 +197,8 @@
       </div>
     </div>
     <h3>Otros</h3>
-    <label class="checkbox-label"><input type="checkbox" id="finish1"> Acabar en zona FIN (10 pts)</label>
-    <label class="checkbox-label"><input type="checkbox" id="allDrive1"> Todos conducen (15 pts)</label>
+    <label class="checkbox-label"><input type="checkbox" id="finish1">Acabar en zona FIN (10 pts)</label>
+    <label class="checkbox-label"><input type="checkbox" id="allDrive1">Todos conducen (15 pts)</label>
     <h3>Total: <span id="total1">0</span> pts</h3>
     <div style="text-align:right;margin-top:8px;"><button onclick="resetTeam(1)" class="secondary">Reset Equipo 1</button></div>
   </div>
@@ -218,8 +225,8 @@
       </div>
     </div>
     <h3>Otros</h3>
-    <label class="checkbox-label"><input type="checkbox" id="finish2"> Acabar en zona FIN (10 pts)</label>
-    <label class="checkbox-label"><input type="checkbox" id="allDrive2"> Todos conducen (15 pts)</label>
+    <label class="checkbox-label"><input type="checkbox" id="finish2">Acabar en zona FIN (10 pts)</label>
+    <label class="checkbox-label"><input type="checkbox" id="allDrive2">Todos conducen (15 pts)</label>
     <h3>Total: <span id="total2">0</span> pts</h3>
     <div style="text-align:right;margin-top:8px;"><button onclick="resetTeam(2)" class="secondary">Reset Equipo 2</button></div>
   </div>
@@ -251,168 +258,25 @@
 <script>
 /* --- Temporizador --- */
 let mainTimer = 120, intervalMain = null;
-
-function beep(){
-  try { new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg").play(); }
-  catch(e){}
-}
-
-function startMain(){
-  if(intervalMain) return;
-  beep();
-  intervalMain = setInterval(()=>{
-    mainTimer--;
-    document.getElementById("mainTimer").textContent = mainTimer;
-    if(mainTimer <= 0){
-      clearInterval(intervalMain);
-      intervalMain = null;
-      beep();
-    }
-  },1000);
-}
-
-function resetMain(){
-  clearInterval(intervalMain);
-  intervalMain = null;
-  mainTimer = 120;
-  document.getElementById("mainTimer").textContent = mainTimer;
-}
-
-/* --- Reset equipo --- */
-function resetTeam(t){
-  ["blue","yellow","green","misSorted"].forEach(id=>document.getElementById(id+t).value=0);
-  ["finish","allDrive"].forEach(id=>document.getElementById(id+t).checked=false);
-  document.getElementById("trees"+t).selectedIndex=0;
-  document.getElementById("team"+t+"_name").value="";
-  document.getElementById("total"+t).textContent=0;
-}
-
-/* --- Calcular puntos --- */
-function calc(t){
-  let blue=+b("blue"+t),yellow=+b("yellow"+t),green=+b("green"+t),mis=+b("misSorted"+t);
-  let rec=0;
-  [blue,yellow,green].forEach(c=>{
-    if(c===1) rec+=2;
-    else if(c===2) rec+=5;
-    else if(c===3) rec+=15;
-  });
-  rec -= mis*5;
-  if(blue>0 && yellow>0 && green>0) rec+=10;
-  let ref=+b("trees"+t),oth=0;
-  if(q("finish"+t).checked) oth+=10;
-  if(q("allDrive"+t).checked) oth+=15;
-  let total=rec+ref+oth;
-  q("total"+t).textContent=total;
-  return total;
-}
-
-function b(id){return +document.getElementById(id).value||0;}
-function q(id){return document.getElementById(id);}
-
-document.querySelectorAll('.team input, .team select')
-  .forEach(el=>el.addEventListener('change',()=>{calc(1);calc(2);}));
-
+function beep(){try { new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg").play(); }catch(e){}}
+function startMain(){if(intervalMain)return;beep();intervalMain=setInterval(()=>{mainTimer--;document.getElementById("mainTimer").textContent=mainTimer;if(mainTimer<=0){clearInterval(intervalMain);intervalMain=null;beep();}},1000);}
+function resetMain(){clearInterval(intervalMain);intervalMain=null;mainTimer=120;document.getElementById("mainTimer").textContent=mainTimer;}
+function resetTeam(t){["blue","yellow","green","misSorted"].forEach(id=>document.getElementById(id+t).value=0);["finish","allDrive"].forEach(id=>document.getElementById(id+t).checked=false);document.getElementById("trees"+t).selectedIndex=0;document.getElementById("team"+t+"_name").value="";document.getElementById("total"+t).textContent=0;}
+function calc(t){let blue=+b("blue"+t),yellow=+b("yellow"+t),green=+b("green"+t),mis=+b("misSorted"+t);let rec=0;[blue,yellow,green].forEach(c=>{if(c===1)rec+=2;else if(c===2)rec+=5;else if(c===3)rec+=15;});rec-=mis*5;if(blue>0&&yellow>0&&green>0)rec+=10;let ref=+b("trees"+t),oth=0;if(q("finish"+t).checked)oth+=10;if(q("allDrive"+t).checked)oth+=15;let total=rec+ref+oth;q("total"+t).textContent=total;return total;}
+function b(id){return +document.getElementById(id).value||0;}function q(id){return document.getElementById(id);}
+document.querySelectorAll('.team input, .team select').forEach(el=>el.addEventListener('change',()=>{calc(1);calc(2);}));
 /* --- Almacenamiento y tablas --- */
 function loadEntries(){return JSON.parse(localStorage.getItem('madbot')||"[]");}
 function saveEntries(d){localStorage.setItem('madbot',JSON.stringify(d));}
 function loadExtras(){return JSON.parse(localStorage.getItem('madbot_extras')||"{}");}
 function saveExtras(o){localStorage.setItem('madbot_extras',JSON.stringify(o));}
-
-function refreshTable(){
-  const tb=document.querySelector("#table tbody");
-  tb.innerHTML="";
-  const d=loadEntries().slice().sort((a,b)=>b.total-a.total);
-  d.forEach((e,i)=>{
-    const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${i+1}</td><td>${e.team}</td><td>${e.total}</td>
-    <td><button onclick="deleteRow(${i})" class="secondary">Borrar</button></td>`;
-    tb.appendChild(tr);
-  });
-}
-
-function deleteRow(i){
-  let d=loadEntries(),s=d.slice().sort((a,b)=>b.total-a.total);
-  const del=s[i],orig=d.findIndex(x=>x.team===del.team&&x.total===del.total);
-  if(orig>-1) d.splice(orig,1);
-  saveEntries(d);
-  refreshTable();
-  renderFinalTable();
-}
-
-q("save").onclick=()=>{
-  const now=Date.now();
-  let d=loadEntries();
-  [1,2].forEach(t=>{
-    const name=q("team"+t+"_name").value.trim();
-    if(!name) return;
-    d.push({team:name,total:calc(t),created:now});
-  });
-  saveEntries(d);
-  refreshTable();
-  renderFinalTable();
-};
-
-q("export").onclick=()=>{
-  let d=loadEntries();
-  if(!d.length){alert("No hay datos");return;}
-  d=d.slice().sort((a,b)=>b.total-a.total);
-  const csv="Puesto,Equipo,Puntos,Fecha\n"+
-    d.map((e,i)=>[i+1,e.team,e.total,new Date(e.created).toLocaleString()].join(",")).join("\n");
-  const blob=new Blob([csv],{type:"text/csv"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="madbot_entries.csv";
-  a.click();
-};
-
-q("reset").onclick=()=>{
-  if(!confirm("¿Borrar todos los datos?"))return;
-  localStorage.removeItem('madbot');
-  localStorage.removeItem('madbot_extras');
-  refreshTable();
-  renderFinalTable();
-  resetTeam(1);
-  resetTeam(2);
-  resetMain();
-};
-
-function renderFinalTable(){
-  const tb=document.querySelector("#finalTable tbody");
-  tb.innerHTML="";
-  const data=loadEntries(),final={};
-  data.forEach(e=>{
-    if(!final[e.team]) final[e.team]={team:e.team,total:0,rounds:0};
-    final[e.team].total+=e.total;
-    final[e.team].rounds++;
-  });
-  const extras=loadExtras();
-  Object.keys(final).forEach(t=>final[t].extra=+extras[t]||0);
-  let arr=Object.values(final).sort((a,b)=>(b.total+b.extra)-(a.total+a.extra));
-  arr.forEach((e,i)=>{
-    const podium=i==0?'🥇':i==1?'🥈':i==2?'🥉':'';
-    const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${i+1}</td><td class="podium">${podium}</td><td>${e.team}</td>
-    <td>${e.rounds}</td><td>${e.total}</td>
-    <td><input class="small" type="number" value="${e.extra}" data-team="${e.team}"></td>
-    <td>${e.total+e.extra}</td>`;
-    tb.appendChild(tr);
-  });
-  tb.querySelectorAll('input[data-team]').forEach(inp=>
-    inp.addEventListener('change',()=>{
-      const team=inp.dataset.team;
-      const val=+inp.value||0;
-      const ex=loadExtras();
-      ex[team]=val;
-      saveExtras(ex);
-      renderFinalTable();
-    })
-  );
-}
-
-refreshTable();
-renderFinalTable();
-calc(1);
-calc(2);
+function refreshTable(){const tb=document.querySelector("#table tbody");tb.innerHTML="";const d=loadEntries().slice().sort((a,b)=>b.total-a.total);d.forEach((e,i)=>{const tr=document.createElement("tr");tr.innerHTML=`<td>${i+1}</td><td>${e.team}</td><td>${e.total}</td><td><button onclick="deleteRow(${i})" class="secondary">Borrar</button></td>`;tb.appendChild(tr);});}
+function deleteRow(i){let d=loadEntries(),s=d.slice().sort((a,b)=>b.total-a.total);const del=s[i],orig=d.findIndex(x=>x.team===del.team&&x.total===del.total);if(orig>-1)d.splice(orig,1);saveEntries(d);refreshTable();renderFinalTable();}
+q("save").onclick=()=>{const now=Date.now();let d=loadEntries();[1,2].forEach(t=>{const name=q("team"+t+"_name").value.trim();if(!name)return;d.push({team:name,total:calc(t),created:now});});saveEntries(d);refreshTable();renderFinalTable();};
+q("export").onclick=()=>{let d=loadEntries();if(!d.length){alert("No hay datos");return;}d=d.slice().sort((a,b)=>b.total-a.total);const csv="Puesto,Equipo,Puntos,Fecha\n"+d.map((e,i)=>[i+1,e.team,e.total,new Date(e.created).toLocaleString()].join(",")).join("\n");const blob=new Blob([csv],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="madbot_entries.csv";a.click();};
+q("reset").onclick=()=>{if(!confirm("¿Borrar todos los datos?"))return;localStorage.removeItem('madbot');localStorage.removeItem('madbot_extras');refreshTable();renderFinalTable();resetTeam(1);resetTeam(2);resetMain();};
+function renderFinalTable(){const tb=document.querySelector("#finalTable tbody");tb.innerHTML="";const data=loadEntries(),final={};data.forEach(e=>{if(!final[e.team])final[e.team]={team:e.team,total:0,rounds:0};final[e.team].total+=e.total;final[e.team].rounds++;});const extras=loadExtras();Object.keys(final).forEach(t=>final[t].extra=+extras[t]||0);let arr=Object.values(final).sort((a,b)=>(b.total+b.extra)-(a.total+a.extra));arr.forEach((e,i)=>{const podium=i==0?'🥇':i==1?'🥈':i==2?'🥉':'';const tr=document.createElement("tr");tr.innerHTML=`<td>${i+1}</td><td class="podium">${podium}</td><td>${e.team}</td><td>${e.rounds}</td><td>${e.total}</td><td><input class="small" type="number" value="${e.extra}" data-team="${e.team}"></td><td>${e.total+e.extra}</td>`;tb.appendChild(tr);});tb.querySelectorAll('input[data-team]').forEach(inp=>inp.addEventListener('change',()=>{const team=inp.dataset.team;const val=+inp.value||0;const ex=loadExtras();ex[team]=val;saveExtras(ex);renderFinalTable();}));}
+refreshTable();renderFinalTable();calc(1);calc(2);
 </script>
 </body>
 </html>
