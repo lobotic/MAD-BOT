@@ -88,14 +88,13 @@
     display: block;
     margin: 6px 0;
   }
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 4px 0;
-  text-align: left;       /* asegura alineación del texto */
-  justify-content: flex-start !important;  /* fuerza izquierda */
-  white-space: nowrap;    /* evita salto de línea */
+.team .checkbox-label {
+  display: flex;             /* checkbox y texto en la misma línea */
+  align-items: center;       /* verticalmente centrados */
+  justify-content: flex-start; /* fuerza alineación a la izquierda */
+  gap: 8px;                  /* espacio entre checkbox y texto */
+  margin: 4px 0;             /* separación vertical */
+  white-space: nowrap;       /* evita que el texto se rompa en varias líneas */
 }
   .checkbox-label input[type="checkbox"] {
     transform: scale(1.2);
