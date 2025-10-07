@@ -283,7 +283,7 @@
 
 <script>
 /* --- Temporizador --- */
-let mainTimer = 120, intervalMain = null;
+let mainTimer = 180, intervalMain = null;
 function beep(){try { new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg").play(); }catch(e){}}
 function startMain(){if(intervalMain)return;beep();intervalMain=setInterval(()=>{mainTimer--;document.getElementById("mainTimer").textContent=mainTimer;if(mainTimer<=0){clearInterval(intervalMain);intervalMain=null;beep();}},1000);}
 function resetMain(){clearInterval(intervalMain);intervalMain=null;mainTimer=120;document.getElementById("mainTimer").textContent=mainTimer;}
