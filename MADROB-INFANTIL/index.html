@@ -88,18 +88,28 @@
     display: block;
     margin: 6px 0;
   }
-.team .checkbox-label {
-  display: flex;             /* checkbox y texto en la misma línea */
-  align-items: center;       /* verticalmente centrados */
-  justify-content: flex-start; /* fuerza alineación a la izquierda */
-  gap: 8px;                  /* espacio entre checkbox y texto */
-  margin: 4px 0;             /* separación vertical */
-  white-space: nowrap;       /* evita que el texto se rompa en varias líneas */
-}
+
+  /* --- Checkboxes alineados a la izquierda --- */
+  .other-options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    white-space: nowrap;
+    margin: 0;
+  }
   .checkbox-label input[type="checkbox"] {
     transform: scale(1.2);
     accent-color: var(--accent);
   }
+
   .team-sections {
     display: flex;
     gap: 12px;
@@ -198,8 +208,10 @@
       </div>
     </div>
     <h3>Otros</h3>
-    <label class="checkbox-label"><input type="checkbox" id="finish1">Acabar en zona FIN (10 pts)</label>
-    <label class="checkbox-label"><input type="checkbox" id="allDrive1">Todos conducen (15 pts)</label>
+    <div class="other-options">
+      <label class="checkbox-label"><input type="checkbox" id="finish1">Acabar en zona FIN (10 pts)</label>
+      <label class="checkbox-label"><input type="checkbox" id="allDrive1">Todos conducen (15 pts)</label>
+    </div>
     <h3>Total: <span id="total1">0</span> pts</h3>
     <div style="text-align:right;margin-top:8px;"><button onclick="resetTeam(1)" class="secondary">Reset Equipo 1</button></div>
   </div>
@@ -226,8 +238,10 @@
       </div>
     </div>
     <h3>Otros</h3>
-    <label class="checkbox-label"><input type="checkbox" id="finish2">Acabar en zona FIN (10 pts)</label>
-    <label class="checkbox-label"><input type="checkbox" id="allDrive2">Todos conducen (15 pts)</label>
+    <div class="other-options">
+      <label class="checkbox-label"><input type="checkbox" id="finish2">Acabar en zona FIN (10 pts)</label>
+      <label class="checkbox-label"><input type="checkbox" id="allDrive2">Todos conducen (15 pts)</label>
+    </div>
     <h3>Total: <span id="total2">0</span> pts</h3>
     <div style="text-align:right;margin-top:8px;"><button onclick="resetTeam(2)" class="secondary">Reset Equipo 2</button></div>
   </div>
