@@ -141,6 +141,18 @@
     color: var(--bg);
   }
 
+ /* --- Campos de reciclaje en la misma línea --- */
+.team .team-section label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+}
+.team .team-section label input {
+  margin: 0;
+  flex: 1; /* ocupa el resto del espacio disponible */
+}
+
   /* --- BOTONES Y TABLAS --- */
   .buttons-container {
     display: flex;
