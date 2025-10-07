@@ -1,52 +1,288 @@
-/* --- Campos de nombre y reciclaje en la misma línea --- */
-.team label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 4px 0;
-}
-.team label input {
-  margin: 0;
-  flex: 1;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>MAD-BOT Scoreboard</title>
+<style>
+  :root {
+    --bg: #f1a140;
+    --fg: #470f18;
+    --table-bg: #d0d0d0;
+    --card-bg: #d0d0d0;
+    --accent: #e44942;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--fg);
+    margin: 0;
+    padding: 20px;
+  }
 
-/* --- Excluir labels de Reforestación para que estén en bloque --- */
-.team-section:last-child label {
-  display: block;
-}
-.team-section:last-child label input,
-.team-section:last-child label select {
-  width: 100%;
-  margin: 6px 0 0 0;
-  flex: unset;
-}
+  /* --- CABECERA --- */
+  header {
+    display: table;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .header-cell {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+  .header-left { text-align: left; width: 33%; }
+  .header-center { text-align: center; width: 34%; }
+  .header-right { text-align: right; width: 33%; }
 
-/* --- Columnas iguales --- */
-.team-sections {
-  display: flex;
-  gap: 12px;
-}
-.team-section { 
-  flex: 1;  /* columnas del mismo ancho */
-}
+  header img {
+    width: 200px;
+  }
+  .timers {
+    font-size: 1.1rem;
+  }
+  .timers button {
+    margin: 5px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .timers button:hover {
+    opacity: 0.95;
+  }
 
-/* --- Checkboxes alineados a la izquierda --- */
-.other-options {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  margin-top: 4px;
-}
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-  white-space: nowrap;
-  margin: 0;
-}
-.checkbox-label input[type="checkbox"] {
-  transform: scale(1.2);
-  accent-color: var(--accent);
-}
+  /* --- COLUMNAS DE EQUIPOS --- */
+  .columns {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  .team {
+    border: 2px solid var(--fg);
+    padding: 14px;
+    border-radius: 10px;
+    width: 420px;
+    background: var(--card-bg);
+    box-sizing: border-box;
+  }
+  .team h2 {
+    color: var(--fg);
+    text-align: center;
+    margin: 4px 0 10px;
+  }
+  .team input, .team select {
+    margin: 6px 0;
+    padding: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1px solid var(--fg);
+    background: #fff;
+    color: var(--fg);
+  }
+
+  /* --- Nombre en la misma línea --- */
+  label {
+    display: block;
+    margin: 6px 0;
+  }
+  .team label.name-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .team label.name-label input {
+    margin: 0;
+    flex: 1;
+  }
+
+  /* --- Checkboxes alineados a la izquierda --- */
+  .other-options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    white-space: nowrap;
+    margin: 0;
+  }
+  .checkbox-label input[type="checkbox"] {
+    transform: scale(1.2);
+    accent-color: var(--accent);
+  }
+
+  .team-sections {
+    display: flex;
+    gap: 12px;
+  }
+  .team-section { flex: 1; }
+  button {
+    margin: 6px 4px 0 0;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  button.secondary {
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  /* --- BOTONES Y TABLAS --- */
+  .buttons-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 18px 0;
+    flex-wrap: wrap;
+  }
+  table {
+    margin: 10px auto 30px;
+    border-collapse: collapse;
+    width: 95%;
+    max-width: 1100px;
+    background: var(--table-bg);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+  th, td {
+    border: 1px solid var(--fg);
+    padding: 8px 10px;
+    text-align: center;
+    color: var(--fg);
+  }
+  th { background: var(--bg); }
+  #scoreboard-title {
+    text-align: center;
+    color: var(--fg);
+    margin-top: 26px;
+    font-size: 1.3rem;
+  }
+  .podium { font-size: 1.25rem; }
+  input.small { width: 70px; padding: 6px; }
+  @media (max-width:900px){
+    .columns{flex-direction:column; align-items:center;}
+    .team{width:92%;}
+    table{width:98%;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-cell header-left"></div>
+  <div class="header-cell header-center">
+        <img src="https://lobotic.github.io/MAD-BOT/MADBOTLogo.png" alt="MAD-BOT Logo">
+  </div>
+  <div class="header-cell header-right">
+    <div class="timers">
+      <p>Tiempo de Partida: <span id="mainTimer">120</span> s</p>
+      <button onclick="startMain()">Iniciar</button>
+      <button onclick="resetMain()">Reset</button>
+    </div>
+  </div>
+</header>
+
+<!-- --- EQUIPOS --- -->
+<div class="columns">
+  <div class="team" id="teamBlock1">
+    <h2>Equipo 1</h2>
+    <label class="name-label">Nombre: <input id="team1_name" placeholder="Nombre del equipo 1"></label>
+    <div class="team-sections">
+      <div class="team-section">
+        <h3>Reciclaje</h3>
+        <label>Azul: <input type="number" id="blue1" min="0" max="3" value="0"></label>
+        <label>Amarillo: <input type="number" id="yellow1" min="0" max="3" value="0"></label>
+        <label>Verde: <input type="number" id="green1" min="0" max="3" value="0"></label>
+        <label>Mal reciclados: <input type="number" id="misSorted1" min="0" value="0"></label>
+      </div>
+      <div class="team-section">
+        <h3>Reforestación</h3>
+        <label>Árbol en el parque:
+          <select id="trees1">
+            <option value="0">No</option>
+            <option value="25">Sí (25 pts)</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <h3>Otros</h3>
+    <div class="other-options">
+      <label class="checkbox-label"><input type="checkbox" id="finish1">Acabar en zona FIN (10 pts)</label>
+      <label class="checkbox-label"><input type="checkbox" id="allDrive1">Todos conducen (15 pts)</label>
+    </div>
+    <h3>Total: <span id="total1">0</span> pts</h3>
+    <div style="text-align:right;margin-top:8px;"><button onclick="resetTeam(1)" class="secondary">Reset Equipo 1</button></div>
+  </div>
+
+  <div class="team" id="teamBlock2">
+    <h2>Equipo 2</h2>
+    <label class="name-label">Nombre: <input id="team2_name" placeholder="Nombre del equipo 2"></label>
+    <div class="team-sections">
+      <div class="team-section">
+        <h3>Reciclaje</h3>
+        <label>Azul: <input type="number" id="blue2" min="0" max="3" value="0"></label>
+        <label>Amarillo: <input type="number" id="yellow2" min="0" max="3" value="0"></label>
+        <label>Verde: <input type="number" id="green2" min="0" max="3" value="0"></label>
+        <label>Mal reciclados: <input type="number" id="misSorted2" min="0" value="0"></label>
+      </div>
+      <div class="team-section">
+        <h3>Reforestación</h3>
+        <label>Árbol en el parque:
+          <select id="trees2">
+            <option value="0">No</option>
+            <option value="25">Sí (25 pts)</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <h3>Otros</h3>
+    <div class="other-options">
+      <label class="checkbox-label"><input type="checkbox" id="finish2">Acabar en zona FIN (10 pts)</label>
+      <label class="checkbox-label"><input type="checkbox" id="allDrive2">Todos conducen (15 pts)</label>
+    </div>
+    <h3>Total: <span id="total2">0</span> pts</h3>
+    <div style="text-align:right;margin-top:8px;"><button onclick="resetTeam(2)" class="secondary">Reset Equipo 2</button></div>
+  </div>
+</div>
+
+<!-- --- TABLAS --- -->
+<div class="buttons-container">
+  <button id="save">Guardar Resultados</button>
+  <button id="export">Exportar CSV</button>
+  <button id="reset">Reiniciar Tabla</button>
+</div>
+
+<h2 id="scoreboard-title">🏆 Clasificación de Rondas 🏆</h2>
+<table id="table">
+  <thead>
+    <tr><th>Puesto</th><th>Equipo</th><th>Puntos</th><th>Acciones</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<h2 id="scoreboard-title">🏁 Puntuación Final 🏁</h2>
+<table id="finalTable">
+  <thead>
+    <tr><th>Puesto</th><th>Podio</th><th>Equipo</th><th>Rondas</th><th>Total</th><th>Extra</th><th>Total + Extra</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+/* --- Aquí va todo el JS igual que antes --- */
+</script>
+</body>
+</html>
