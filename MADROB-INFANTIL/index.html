@@ -286,7 +286,7 @@
 let mainTimer = 300, intervalMain = null;
 function beep(){try { new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg").play(); }catch(e){}}
 function startMain(){if(intervalMain)return;beep();intervalMain=setInterval(()=>{mainTimer--;document.getElementById("mainTimer").textContent=mainTimer;if(mainTimer<=0){clearInterval(intervalMain);intervalMain=null;beep();}},1000);}
-function resetMain(){clearInterval(intervalMain);intervalMain=null;mainTimer=120;document.getElementById("mainTimer").textContent=mainTimer;}
+function resetMain(){clearInterval(intervalMain);intervalMain=null;mainTimer=300;document.getElementById("mainTimer").textContent=mainTimer;}
 function resetTeam(t){["blue","yellow","green","misSorted"].forEach(id=>document.getElementById(id+t).value=0);["finish","allDrive"].forEach(id=>document.getElementById(id+t).checked=false);document.getElementById("trees"+t).selectedIndex=0;document.getElementById("team"+t+"_name").value="";document.getElementById("total"+t).textContent=0;}
 function calc(t){let blue=+b("blue"+t),yellow=+b("yellow"+t),green=+b("green"+t),mis=+b("misSorted"+t);let rec=0;[blue,yellow,green].forEach(c=>{if(c===1)rec+=2;else if(c===2)rec+=5;else if(c===3)rec+=15;});rec-=mis*5;if(blue>0&&yellow>0&&green>0)rec+=10;let ref=+b("trees"+t),oth=0;if(q("finish"+t).checked)oth+=10;if(q("allDrive"+t).checked)oth+=15;let total=rec+ref+oth;q("total"+t).textContent=total;return total;}
 function b(id){return +document.getElementById(id).value||0;}function q(id){return document.getElementById(id);}
