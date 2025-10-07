@@ -5,167 +5,168 @@
 <title>MAD-BOT Scoreboard</title>
 <style>
   :root {
-    --bg: #f1a140;
-    --fg: #470f18;
-    --table-bg: #d0d0d0;
-    --card-bg: #d0d0d0;
-    --accent: #e44942;
-  }
-  body {
-    font-family: Arial, sans-serif;
-    background-color: var(--bg);
-    color: var(--fg);
-    margin: 0;
-    padding: 20px;
-  }
+  --bg: #f1a140;
+  --fg: #470f18;
+  --table-bg: #d0d0d0;
+  --card-bg: #d0d0d0;
+  --accent: #e44942;
+}
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+  margin: 0;
+  padding: 20px;
+}
 
-  /* --- CABECERA --- */
-  header {
-    display: table;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  .header-cell {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-  }
-  .header-left { text-align: left; width: 33%; }
-  .header-center { text-align: center; width: 34%; }
-  .header-right { text-align: right; width: 33%; }
+/* --- CABECERA --- */
+header {
+  display: table;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.header-cell {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.header-left { text-align: left; width: 33%; }
+.header-center { text-align: center; width: 34%; }
+.header-right { text-align: right; width: 33%; }
 
-  header img {
-    width: 200px;
-  }
-  .timers {
-    font-size: 1.1rem;
-  }
-  .timers button {
-    margin: 5px;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 8px;
-    background: var(--accent);
-    color: #fff;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  .timers button:hover {
-    opacity: 0.95;
-  }
+header img {
+  width: 200px;
+}
+.timers {
+  font-size: 1.1rem;
+}
+.timers button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.timers button:hover {
+  opacity: 0.95;
+}
 
-  /* --- COLUMNAS DE EQUIPOS --- */
-  .columns {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-  .team {
-    border: 2px solid var(--fg);
-    padding: 14px;
-    border-radius: 10px;
-    width: 420px;
-    background: var(--card-bg);
-    box-sizing: border-box;
-  }
-  .team h2 {
-    color: var(--fg);
-    text-align: center;
-    margin: 4px 0 10px;
-  }
-  .team input, .team select {
-    margin: 6px 0;
-    padding: 6px;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 6px;
-    border: 1px solid var(--fg);
-    background: #fff;
-    color: var(--fg);
-  }
-  label {
-    display: block;
-    margin: 6px 0;
-  }
+/* --- COLUMNAS DE EQUIPOS --- */
+.columns {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.team {
+  border: 2px solid var(--fg);
+  padding: 14px;
+  border-radius: 10px;
+  width: 420px;
+  background: var(--card-bg);
+  box-sizing: border-box;
+}
+.team h2 {
+  color: var(--fg);
+  text-align: center;
+  margin: 4px 0 10px;
+}
 
-  /* --- Checkboxes alineados a la izquierda --- */
-  .other-options {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    margin-top: 4px;
-  }
-  .checkbox-label {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    white-space: nowrap;
-    margin: 0;
-  }
-  .checkbox-label input[type="checkbox"] {
-    transform: scale(1.2);
-    accent-color: var(--accent);
-  }
+/* --- Campos de nombre y reciclaje en la misma línea --- */
+.team label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+}
+.team label input {
+  margin: 0;
+  flex: 1; /* ocupa el resto del espacio disponible */
+}
 
-  .team-sections {
-    display: flex;
-    gap: 12px;
-  }
-  .team-section { flex: 1; }
-  button {
-    margin: 6px 4px 0 0;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 8px;
-    background: var(--accent);
-    color: #fff;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  button.secondary {
-    background: var(--fg);
-    color: var(--bg);
-  }
+/* --- Checkboxes alineados a la izquierda --- */
+.other-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 4px;
+}
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  white-space: nowrap;
+  margin: 0;
+}
+.checkbox-label input[type="checkbox"] {
+  transform: scale(1.2);
+  accent-color: var(--accent);
+}
 
-  /* --- BOTONES Y TABLAS --- */
-  .buttons-container {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin: 18px 0;
-    flex-wrap: wrap;
-  }
-  table {
-    margin: 10px auto 30px;
-    border-collapse: collapse;
-    width: 95%;
-    max-width: 1100px;
-    background: var(--table-bg);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-  }
-  th, td {
-    border: 1px solid var(--fg);
-    padding: 8px 10px;
-    text-align: center;
-    color: var(--fg);
-  }
-  th { background: var(--bg); }
-  #scoreboard-title {
-    text-align: center;
-    color: var(--fg);
-    margin-top: 26px;
-    font-size: 1.3rem;
-  }
-  .podium { font-size: 1.25rem; }
-  input.small { width: 70px; padding: 6px; }
-  @media (max-width:900px){
-    .columns{flex-direction:column; align-items:center;}
-    .team{width:92%;}
-    table{width:98%;}
-  }
+.team-sections {
+  display: flex;
+  gap: 12px;
+}
+.team-section { flex: 1; }
+
+button {
+  margin: 6px 4px 0 0;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+button.secondary {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* --- BOTONES Y TABLAS --- */
+.buttons-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 18px 0;
+  flex-wrap: wrap;
+}
+table {
+  margin: 10px auto 30px;
+  border-collapse: collapse;
+  width: 95%;
+  max-width: 1100px;
+  background: var(--table-bg);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+th, td {
+  border: 1px solid var(--fg);
+  padding: 8px 10px;
+  text-align: center;
+  color: var(--fg);
+}
+th { background: var(--bg); }
+#scoreboard-title {
+  text-align: center;
+  color: var(--fg);
+  margin-top: 26px;
+  font-size: 1.3rem;
+}
+.podium { font-size: 1.25rem; }
+input.small { width: 70px; padding: 6px; }
+
+@media (max-width:900px){
+  .columns{flex-direction:column; align-items:center;}
+  .team{width:92%;}
+  table{width:98%;}
+}
+
 </style>
 </head>
 <body>
