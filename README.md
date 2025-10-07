@@ -10,6 +10,7 @@ Lo malo de las competiciones de robótica es que normalmente  hay que desplazars
 
 [Presentación MADBOT](https://github.com/lobotic/MAD-BOT/blob/main/presentacionMADBOT.pdf)
 
+## [Aquí tienes la versión para Educación Infantil con robots de suelo](https://github.com/lobotic/MAD-BOT/tree/main/MADROB-INFANTIL)
 ----
 
 ## 📝 REGLAMENTO
