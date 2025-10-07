@@ -1,6 +1,7 @@
 ![NORMAS](https://github.com/lobotic/MAD-BOT/blob/main/MADROB-INFANTIL/PUNTUACIONMADROBINFANTIL5.jpg)
 
 [Descarga las normas en pdf](https://github.com/lobotic/MAD-BOT/blob/main/MADROB-INFANTIL/pUNTUACION%20INFANTILMADROB25.pdf)
+
 [Descarga el campo en pdf para imprimir en 2 A3](https://github.com/lobotic/MAD-BOT/blob/main/MADROB-INFANTIL/INFANTILCAMPOMADROB25.pdf)
 
 ## Marcador MAD-BOT INFANTIL
